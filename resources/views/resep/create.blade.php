@@ -1,0 +1,62 @@
+@extends('layouts.app')
+@section('content')
+    <div class="container">
+
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center bg-primary">
+                <h3 class="card-title text-bg-primary">Tambah Resep</h3>
+                <a href="{{ route('resep.index') }}" class="btn btn-warning">Kembali</a>
+            </div>
+            <div class="card-body">
+                <form action="{{ route('resep.store') }}" method="POST">
+                    @csrf
+
+                    <div class="form-group my-2">
+                        <label for="judul_resep">Nama Resep</label>
+                        <input type="text" class="form-control @error('judul_resep') is-invalid @enderror"
+                            name="judul_resep" id="judul_resep" value="{{ old('judul_resep') }}" autofocus>
+                        @error('judul_resep')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    <div class="form-group my-2">
+                        <label for="kategori_id">Nama Katergori</label>
+                        <select class="form-select @error('kategori_id') is-invalid @enderror" name="kategori_id"
+                            id="kategori_id" value="{{ old('kategori_id') }}" required>
+                            <option selected>Pilih kategori</option>
+                            @foreach ($kategori as $item)
+                                <option value="{{ $item->id }}" {{ old('kategori_id') == $item->id ? 'selected' : '' }}>
+                                    {{ $item->nama_kategori }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('kategori_id')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    <div class="form-group my-2">
+                        <label for="judul_resep">Bahan</label>
+                        <input type="text" class="form-control @error('bahan_resep') is-invalid @enderror"
+                            name="bahan_resep" id="bahan_resep" value="{{ old('bahan_resep') }}" autofocus>
+                        @error('bahan_resep')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                    <div class="form-group my-2">
+                        <label for="langkah_resep">Langkah</label>
+                        <input type="text" class="form-control @error('langkah_resep') is-invalid @enderror"
+                            name="langkah_resep" id="langkah_resep" value="{{ old('langkah_resep') }}" autofocus>
+                        @error('langkah_resep')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+
+            </div>
+        </div>
+    @endsection
