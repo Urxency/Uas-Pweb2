@@ -21,6 +21,10 @@ Route::resource('/kategori', KategoriController::class);
 Route::resource('/resep', ResepController::class);
 
 route::resource('/rating', RatingController::class);
-
+route::resource('/tampilan', RatingController::class);
+Route::get('/tampilan', function () {
+    return view('tampilan.index');
+});
 
 Route::get('/resep/create', [ResepController::class, 'create'])->name('resep.create');
+
