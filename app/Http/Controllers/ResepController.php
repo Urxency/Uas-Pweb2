@@ -35,7 +35,7 @@ class ResepController extends Controller
         'bahan_resep'   => $validated['bahan_resep'],
         'langkah_resep' => $validated['langkah_resep'],
         'kategori_id'   => $validated['kategori_id'],
-        'user_id'       => auth()->id(),
+        // 'user_id'       => auth()->id(),
     ]);
 
     return redirect()->route('resep.index')->with('success', 'Resep berhasil ditambahkan');
