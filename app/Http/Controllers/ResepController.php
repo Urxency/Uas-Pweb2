@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Resep;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;    
 use App\Models\Kategori;
 
 class ResepController extends Controller
@@ -25,8 +26,8 @@ class ResepController extends Controller
 {
     $validated = $request->validate([
         'judul_resep' => 'required|string|max:255',
-        'bahan_resep' => 'required|string|max:255',
-        'langkah_resep' => 'required|string|max:255',
+        'bahan_resep' => 'required|string',
+        'langkah_resep' => 'required|string',
         'kategori_id' => 'required|exists:kategoris,id',
     ]);
 
@@ -35,7 +36,7 @@ class ResepController extends Controller
         'bahan_resep'   => $validated['bahan_resep'],
         'langkah_resep' => $validated['langkah_resep'],
         'kategori_id'   => $validated['kategori_id'],
-        'user_id'       => auth()->id(),
+        'user_id'       => Auth::id(),
     ]);
 
     return redirect()->route('resep.index')->with('success', 'Resep berhasil ditambahkan');
@@ -46,7 +47,8 @@ class ResepController extends Controller
     public function edit($id)
     {
         $resep = Resep::findOrfail($id);
-        return view('resep.edit', compact('resep'));
+        $kategori = Kategori::all();
+        return view('resep.edit', compact('resep','kategori'));
     }
 
     public function update(Request $request, $id)
@@ -54,18 +56,26 @@ class ResepController extends Controller
         $request->validate(
             [
                 'judul_resep' => 'required|string|max:255',
-                'bahan_resep' => 'required|string|max:255',
-                'langkah_resep' => 'required|string|max:255',
+                'bahan_resep' => 'required|string',
+                'langkah_resep' => 'required|string',
+                'kategori_id' => 'required|exists:kategoris,id',
             ],
             [
                 'judul_resep.required' => 'Nama resep wajib diisi.',
                 'bahan_resep.required' => 'bahan resep wajib diisi.',
                 'langkah_resep.required' => 'langkah resep wajib diisi.',
+                'kategori_id.required' => 'kategori wajib diisi.',
             ],
         );
 
         $resep = Resep::findOrfail($id);
-        $resep->update($request->all());
+        $resep->update([
+            'judul_resep' => $request->judul_resep,
+            'bahan_resep' => $request->bahan_resep,
+            'langkah_resep' => $request->langkah_resep,
+            'kategori_id' => $request->kategori_id, 
+        ]);
+
         return redirect()->route('resep.index')->with('success', 'resep berhasil diperbarui');
     }
 

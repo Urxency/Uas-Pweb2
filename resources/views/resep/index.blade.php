@@ -21,6 +21,7 @@
                                 <th>Nama Resep</th>
                                 <th>Bahan</th>
                                 <th>Langkah</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -34,11 +35,11 @@
                                         <div class="btn-group btn-group-sm" role="group">
                                                 <a href="{{ route('resep.show', $data->id) }}"
                                                     class="btn btn-outline-info" title="Detail">
-                                                    <i class="fas fa-eye"></i>
+                                                    <i class="fas fa-eye"></i>Show
                                                 </a>
                                                 <a href="{{ route('resep.edit', $data->id) }}"
                                                     class="btn btn-outline-warning" title="Edit">
-                                                    <i class="fas fa-edit"></i>
+                                                    <i class="fas fa-edit"></i>Edit
                                                 </a>
                                                 <form action="{{ route('resep.destroy', $data->id) }}" method="POST"
                                                     class="d-inline"
@@ -46,7 +47,7 @@
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-outline-danger" title="Hapus">
-                                                        <i class="fas fa-trash"></i>
+                                                        <i class="fas fa-trash"></i>Delete
                                                     </button>
                                                 </form>
                                             </div>

@@ -17,7 +17,9 @@
                     <table class="table table-bordered table-striped table-hover  " id="data-table">
                         <thead class="table-dark">
                             <tr>
+                                <th>No</th>
                                 <th>Nama kategori</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -29,11 +31,11 @@
                                         <div class="btn-group btn-group-sm" role="group">
                                                 <a href="{{ route('kategori.show', $data->id) }}"
                                                     class="btn btn-outline-info" title="Detail">
-                                                    <i class="fas fa-eye"></i>
+                                                    <i class="fas fa-eye"></i>Show
                                                 </a>
                                                 <a href="{{ route('kategori.edit', $data->id) }}"
                                                     class="btn btn-outline-warning" title="Edit">
-                                                    <i class="fas fa-edit"></i>
+                                                    <i class="fas fa-edit"></i>Edit
                                                 </a>
                                                 <form action="{{ route('kategori.destroy', $data->id) }}" method="POST"
                                                     class="d-inline"
@@ -41,7 +43,7 @@
                                                     @csrf
                                                     @method('DELETE')
                                                     <button type="submit" class="btn btn-outline-danger" title="Hapus">
-                                                        <i class="fas fa-trash"></i>
+                                                        <i class="fas fa-trash"></i>Delete
                                                     </button>
                                                 </form>
                                             </div>
