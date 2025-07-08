@@ -9,8 +9,15 @@ use Illuminate\Support\Facades\Auth;
 
 class RatingController extends Controller
 {
+
+    public function index()
+    {
+        return view('Tampilan.index');
+    }
+    
     public function store(Request $request, Resep $recipe)
     {
+        
         $validated = $request->validate([
             'nilai' => 'required|integer|min:1|max:5',
         ]);

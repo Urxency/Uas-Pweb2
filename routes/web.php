@@ -22,7 +22,16 @@ Route::resource('/kategori', KategoriController::class);
 Route::resource('/resep', ResepController::class);
 
 route::resource('/rating', RatingController::class);
-route::resource('/tampilan', TampilanController::class);
+route::resource('/tampilan', RatingController::class);
+
+// Route::get('/home', function () {
+//     return view('Tampilan.index');
+// });
+
+
+Route::get('/home', function () {
+    return view('Tampilan.index');
+})->name('home');
 
 
 Route::get('/resep/create', [ResepController::class, 'create'])->name('resep.create');
