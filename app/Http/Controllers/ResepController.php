@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 use App\Models\Resep;
 use Illuminate\Http\Request;
-use App\Models\Kategori;
 
 class ResepController extends Controller
 {
@@ -15,8 +14,8 @@ class ResepController extends Controller
 
     public function create()
     {
-        $kategori = Kategori::all();
-        return view('resep.create', compact('kategori'));
+        $resep = resep::all();
+        return view('resep.create', compact('resep'));
         
     }
     
@@ -27,14 +26,14 @@ class ResepController extends Controller
         'judul_resep' => 'required|string|max:255',
         'bahan_resep' => 'required|string|max:255',
         'langkah_resep' => 'required|string|max:255',
-        'kategori_id' => 'required|exists:kategoris,id',
+        'resep_id' => 'required|exists:reseps,id',
     ]);
 
     Resep::create([
         'judul_resep'   => $validated['judul_resep'],
         'bahan_resep'   => $validated['bahan_resep'],
         'langkah_resep' => $validated['langkah_resep'],
-        'kategori_id'   => $validated['kategori_id'],
+        'resep_id'   => $validated['resep_id'],
         'user_id'       => auth()->id(),
     ]);
 

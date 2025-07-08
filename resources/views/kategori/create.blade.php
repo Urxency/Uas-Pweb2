@@ -12,7 +12,7 @@
                     @csrf
 
                     <div class="form-group my-2">
-                        <label for="nama_kategori">Nama kategori</label>
+                        <label for="nama_kategori">Nama Kategori</label>
                         <input type="text" class="form-control @error('nama_kategori') is-invalid @enderror"
                             name="nama_kategori" id="nama_kategori" value="{{ old('nama_kategori') }}" autofocus>
                         @error('nama_kategori')

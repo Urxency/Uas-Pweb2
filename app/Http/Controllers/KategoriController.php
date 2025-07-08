@@ -25,6 +25,7 @@ class KategoriController extends Controller
         $validated = $request->validate(
             [
                 'nama_kategori' => 'required|string|max:255',
+                
             ],
             [
                 'nama_kategori.required' => 'Nama kategori wajib diisi.',

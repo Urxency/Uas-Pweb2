@@ -1,65 +1,52 @@
 @extends('layouts.app')
+
 @section('content')
-    <div class="container">
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-        <div class="card mt-3">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h3 class="card-title mb-0">kategori Saya</h3>
-                <a href="{{ route('kategori.create') }}" class="btn btn-primary">Tambah kategori</a>
-            </div>
-        @if ($kategori->count() > 0)
-                <div class="card-body">
-                    <table class="table table-bordered table-striped table-hover  " id="data-table">
-                        <thead class="table-dark">
-                            <tr>
-                                <th>Nama kategori</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($kategori as $index => $data)
-                                <tr>
-                                    <td>{{ $index + 1 }}</td>
-                                    <td><strong>{{ $data->nama_kategori }}</strong></td>
-                                    <td>
-                                        <div class="btn-group btn-group-sm" role="group">
-                                                <a href="{{ route('kategori.show', $data->id) }}"
-                                                    class="btn btn-outline-info" title="Detail">
-                                                    <i class="fas fa-eye"></i>
-                                                </a>
-                                                <a href="{{ route('kategori.edit', $data->id) }}"
-                                                    class="btn btn-outline-warning" title="Edit">
-                                                    <i class="fas fa-edit"></i>
-                                                </a>
-                                                <form action="{{ route('kategori.destroy', $data->id) }}" method="POST"
-                                                    class="d-inline"
-                                                    onsubmit="return confirm('Yakin ingin menghapus kategori {{ $data->kategori_nama }}?')">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="btn btn-outline-danger" title="Hapus">
-                                                        <i class="fas fa-trash"></i>
-                                                    </button>
-                                                </form>
-                                            </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                @else
-                    <div class="text-center py-5">
-                        <i class="fas fa-users fa-3x text-muted mb-3"></i>
-                        <h5 class="text-muted">Belum ada data kategori</h5>
-                    </div>
-            @endif
+<div class="container">
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
+    @endif
+
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4>Kategori Saya</h4>
+        <a href="{{ route('kategori.create') }}" class="btn btn-primary">Tambah Kategori</a>
     </div>
-    </div>
-    </div>
-    </div>
-    </div>
+
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th style="width: 50px;">#</th>
+                <th>Nama Kategori</th>
+                <th style="width: 150px;">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($kategori as $index => $item)
+            <tr>
+                <td>{{ $index + 1 }}</td>
+                <td>{{ $item->nama_kategori }}</td>
+                <td>
+                <div class="d-flex gap-1">
+                    <a href="{{ route('kategori.show', $item->id) }}" class="btn btn-outline-info btn-sm" title="Lihat">
+                        <i class="fas fa-eye">Lihat</i>
+                    </a>
+                    <a href="{{ route('kategori.edit', $item->id) }}" class="btn btn-outline-warning btn-sm" title="Edit">
+                        <i class="fas fa-edit">Edit</i>
+                    </a>
+                    <form action="{{ route('kategori.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus kategori ini?')">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-outline-danger btn-sm" title="Hapus">
+                            <i class="fas fa-trash">Hapus</i>
+                        </button>
+                    </form>
+                </div>
+            </td>
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div>
 @endsection

@@ -3,6 +3,7 @@
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\ResepController;
+use App\Http\Controllers\TampilanController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,10 +22,8 @@ Route::resource('/kategori', KategoriController::class);
 Route::resource('/resep', ResepController::class);
 
 route::resource('/rating', RatingController::class);
-route::resource('/tampilan', RatingController::class);
-Route::get('/tampilan', function () {
-    return view('tampilan.index');
-});
+route::resource('/tampilan', TampilanController::class);
+
 
 Route::get('/resep/create', [ResepController::class, 'create'])->name('resep.create');
 
