@@ -16,10 +16,10 @@ class ResepController extends Controller
 
     public function create()
     {
-        $resep = resep::all();
-        return view('resep.create', compact('resep'));
-        
+    $kategori = Kategori::all(); // Ambil semua kategori
+    return view('resep.create', compact('kategori'));
     }
+
     
 
     public function store(Request $request)
