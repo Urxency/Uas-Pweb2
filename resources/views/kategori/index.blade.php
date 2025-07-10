@@ -9,7 +9,7 @@
         @endif
         <div class="card mt-3">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h3 class="card-title mb-0">kategori Saya</h3>
+                <h3 class="card-title mb-0">Kategori Resep</h3>
                 <a href="{{ route('kategori.create') }}" class="btn btn-primary">Tambah kategori</a>
             </div>
         @if ($kategori->count() > 0)

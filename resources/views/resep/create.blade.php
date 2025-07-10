@@ -21,13 +21,13 @@
                     </div>
 
                     <div class="form-group my-2">
-                        <label for="kategori_id">Nama Katergori</label>
+                        <label for="kategori_id">Katergori</label>
                         <select class="form-select @error('kategori_id') is-invalid @enderror" name="kategori_id"
                             id="kategori_id" value="{{ old('kategori_id') }}" required>
                             <option selected>Pilih kategori</option>
                             @foreach ($kategori as $item)
                                 <option value="{{ $item->id }}" {{ old('kategori_id') == $item->id ? 'selected' : '' }}>
-                                    {{ $item->nama_kategori }}
+                                    {{ $item->kategori_id }}
                                 </option>
                             @endforeach
                         </select>
@@ -52,6 +52,14 @@
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
+                    <div class="form-group my-2">
+    <label for="gambar">Gambar Resep</label>
+    <input type="file" class="form-control @error('gambar') is-invalid @enderror"
+        name="gambar" id="gambar" accept="image/*">
+    @error('gambar')
+        <small class="text-danger">{{ $message }}</small>
+    @enderror
+</div>
 
 
                     <button type="submit" class="btn btn-primary">Submit</button>
