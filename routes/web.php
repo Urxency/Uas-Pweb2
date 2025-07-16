@@ -19,13 +19,13 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 Route::resource('/rating', RatingController::class);
-Route::middleware(['isAdmin'])->group(function () {
+Route::middleware(['auth','isAdmin'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::resource('admin/users', UserController::class);
     // tambahkan route admin lainnya di sini
     Route::resource('/kategori', KategoriController::class);
 });
- 
+
 // User Routes
 Route::middleware(['auth'])->group(function () {
     // tambahkan route user lainnya di sini
