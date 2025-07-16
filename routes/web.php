@@ -50,7 +50,12 @@ Route::middleware(['auth','isAdmin'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     // tambahkan route user lainnya di sini
     Route::resource('/resep', ResepController::class);
+    
+    Route::get('/profile/{id}', [App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/profile/{id}/edit', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/profile/{id}', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
 });
+
 
 // duplikat — dibiarkan sesuai permintaan
 Route::get('/resep/create', [ResepController::class, 'create'])->name('resep.create');

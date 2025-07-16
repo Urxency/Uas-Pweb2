@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
             'name' => 'admin',
             'email' => 'admin@resepkos.com',
             'password' => Hash::make('123'),
-            'role_id' => $adminRole->id,
+            'role_id' => 1,
         ]);
     }
 }

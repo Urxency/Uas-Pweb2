@@ -38,12 +38,12 @@
                         </div>
 
                         <div class="d-flex justify-content-between mt-4">
-                            <a href="{{ route('users.index') }}" class="btn btn-secondary">
+                            <a href="{{ route('home') }}" class="btn btn-secondary">
                                 <i class="fas fa-arrow-left me-1"></i> Kembali
                             </a>
 
                             <div class="d-flex gap-2">
-                                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-info">
+                                <a href="{{ route('profile.edit', $user->id) }}" class="btn btn-info">
                                     <i class="fas fa-edit me-1"></i> Edit
                                 </a>
                             </div>
