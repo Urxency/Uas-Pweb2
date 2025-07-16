@@ -663,7 +663,7 @@
         </section>
     </main>
 
-    <!-- Recipe Detail Modal -->
+    {{-- <!-- Recipe Detail Modal -->
     <div class="modal" id="recipeModal">
         <div class="modal-content">
             <button class="modal-close" onclick="closeModal()">×</button>
@@ -701,7 +701,7 @@
                         <li>Masak hingga nasi panas dan bumbu meresap</li>
                         <li>Nasi goreng siap disajikan</li>
                     </ol>
-                </div>
+                </div> --}}
 
                 <div class="rating-section">
                     <h3><i class="fas fa-star"></i> Beri Rating</h3>

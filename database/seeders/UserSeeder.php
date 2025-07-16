@@ -14,9 +14,9 @@ class UserSeeder extends Seeder
         $adminRole = Role::where('name', 'admin')->first();
 
         User::create([
-            'name' => 'Admin',
+            'name' => 'admin',
             'email' => 'admin@resepkos.com',
-            'password' => Hash::make('password'),
+            'password' => Hash::make('123'),
             'role_id' => $adminRole->id,
         ]);
     }

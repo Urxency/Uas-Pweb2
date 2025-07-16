@@ -23,6 +23,7 @@
                                         <h5 class="card-title">Manajemen User</h5>
                                         <p class="card-text">Kelola data pengguna sistem.</p>
                                         <a href="{{ route('users.index') }}" class="btn btn-primary">Kelola User</a>
+                                        {{-- <a href="{{ route('admin.index') }}" class="btn btn-primary">tampilan</a> --}}
                                     </div>
                                 </div>
                             </div>
