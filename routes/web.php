@@ -30,4 +30,4 @@ Route::middleware(['auth'])->group(function () {
     // tambahkan route user lainnya di sini
     Route::resource('/resep', ResepController::class);
 });
-
+Route::get('/resep/create', [ResepController::class, 'create'])->name('resep.create');
