@@ -7,6 +7,7 @@ use App\Http\Controllers\RatingController;
 use App\Http\Controllers\ResepController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\TampilanController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -31,3 +32,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('/resep', ResepController::class);
 });
 Route::get('/resep/create', [ResepController::class, 'create'])->name('resep.create');
+
+route::resource('/tampilan', RatingController::class);
+Route::get('/tampilan', function () {
+    return view('tampilan.index');
+});
