@@ -8,6 +8,7 @@ use App\Http\Controllers\ResepController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\TampilanController;
+use App\Models\Resep;
 
 //
 // ==============================
@@ -16,7 +17,8 @@ use App\Http\Controllers\TampilanController;
 //
 
 Route::get('/', function () {
-    return view('home');
+    $resep = Resep::latest()->take(6)->get(); // atau sesuai kebutuhanmu
+    return view('home', compact('resep'));
 });
 
 Auth::routes();     
@@ -50,6 +52,8 @@ Route::middleware(['auth','isAdmin'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     // tambahkan route user lainnya di sini
     Route::resource('/resep', ResepController::class);
+    Route::get('/resep', [ResepController::class, 'index'])->name('resep.index');
+    
     
     Route::get('/profile/{id}', [App\Http\Controllers\ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/{id}/edit', [App\Http\Controllers\ProfileController::class, 'edit'])->name('profile.edit');

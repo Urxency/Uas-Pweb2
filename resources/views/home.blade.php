@@ -417,6 +417,39 @@
             box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
         }
 
+        .recipe-card-wrapper {
+            perspective: 1000px;
+        }
+
+        .recipe-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .recipe-card-wrapper.flipped .recipe-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .recipe-card-front,
+        .recipe-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            overflow: hidden;
+            background: white;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .recipe-card-back {
+            transform: rotateY(180deg);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .nav-menu {
@@ -495,7 +528,7 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ route('profile.show', auth()->user()) }}">Profile</a>
+                            <a class="dropdown-item" href="{{ route('profile.show', auth()->user()) }}">Profile</a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
                                                     document.getElementById('logout-form').submit();">
@@ -553,32 +586,33 @@
 
             <div class="recipes-grid" id="recipesGrid">
                 <!-- Recipe Card 1 -->
-                <div class="recipe-card" data-category="nasi" onclick="openModal('nasi-goreng')">
-                    <div class="recipe-image">
-                        <div class="recipe-difficulty">Mudah</div>
-                        <div
-                            style="width: 100%; height: 100%; background: linear-gradient(45deg, #ff6b6b, #ffd93d); display: flex; align-items: center; justify-content: center; font-size: 3rem;">
-                            🍚</div>
-                    </div>
-                    <div class="recipe-content">
-                        <h3 class="recipe-title">Nasi Goreng Sederhana</h3>
-                        <div class="recipe-meta">
-                            <span><i class="fas fa-clock"></i> 15 menit</span>
-                            <div class="recipe-rating">
-                                <span class="stars">★★★★★</span>
-                                <span>(4.5)</span>
+                @foreach ($resep as $item)
+                    <div class="recipe-card-wrapper">
+                        <div class="recipe-card-inner">
+                            <!-- Sisi Depan -->
+                            <div class="recipe-card-front">
+                                <h3>{{ $item->judul_resep }}</h3>
+                                @if ($item->gambar)
+                                    <img src="{{ asset('storage/' . $item->gambar) }}" alt="Gambar Resep"
+                                        style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px;">
+                                @endif
+                                <p style="font-size: 0.9rem; color: #666;">Klik untuk melihat detail resep</p>
+                            </div>
+
+                            <!-- Sisi Belakang -->
+                            <div class="recipe-card-back">
+                                <strong>Bahan:</strong>
+                                <p>{!! nl2br(e($item->bahan_resep)) !!}</p>
+
+                                <strong>Langkah:</strong>
+                                <p>{!! nl2br(e($item->langkah_resep)) !!}</p>
                             </div>
                         </div>
-                        <p style="color: #666; font-size: 0.9rem;">Nasi goreng praktis dengan bahan seadanya di kos</p>
-                        <div class="recipe-author">
-                            <div class="author-avatar">A</div>
-                            <span>Ahmad Rizki</span>
-                        </div>
                     </div>
-                </div>
+                @endforeach
 
                 <!-- Recipe Card 2 -->
-                <div class="recipe-card" data-category="mie" onclick="openModal('mie-ayam')">
+                {{-- <div class="recipe-card" data-category="mie" onclick="openModal('mie-ayam')">
                     <div class="recipe-image">
                         <div class="recipe-difficulty">Sedang</div>
                         <div
@@ -601,7 +635,7 @@
                             <span>Sari Indah</span>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 <!-- Recipe Card 3 -->
                 <div class="recipe-card" data-category="gorengan" onclick="openModal('tempe-goreng')">
@@ -767,3 +801,12 @@
     <button class="fab" title="Tambah Resep Baru">
         <a href="{{ route('resep.create') }}" class="fas fa-plus" style="text-decoration: none;"></a>
     </button> --}}
+
+
+    <script>
+        document.querySelectorAll('.recipe-card-wrapper').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('flipped');
+            });
+        });
+    </script>
