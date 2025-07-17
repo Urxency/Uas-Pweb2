@@ -1,15 +1,10 @@
 <!DOCTYPE html>
 <html lang="id">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ResepKos - Aplikasi Resep Masakan Mahasiswa</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
-    <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-
     <style>
         * {
             margin: 0;
@@ -34,7 +29,7 @@
             width: 100%;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 20px rgba(0,0,0,0.1);
         }
 
         .nav-container {
@@ -126,7 +121,7 @@
         .hero h1 {
             font-size: 3rem;
             margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
         }
 
         .hero p {
@@ -141,7 +136,7 @@
             padding: 2rem;
             border-radius: 15px;
             margin: 2rem 0;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
         .search-container {
@@ -201,14 +196,14 @@
             background: white;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
             transition: all 0.3s;
             cursor: pointer;
         }
 
         .recipe-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
         }
 
         .recipe-image {
@@ -229,7 +224,7 @@
             position: absolute;
             top: 1rem;
             right: 1rem;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0,0,0,0.7);
             color: white;
             padding: 0.3rem 0.8rem;
             border-radius: 15px;
@@ -295,7 +290,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0,0,0,0.8);
             z-index: 2000;
             overflow-y: auto;
         }
@@ -313,7 +308,7 @@
             position: absolute;
             top: 1rem;
             right: 1rem;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0,0,0,0.5);
             color: white;
             border: none;
             width: 40px;
@@ -333,13 +328,11 @@
             padding: 2rem;
         }
 
-        .ingredients-list,
-        .instructions-list {
+        .ingredients-list, .instructions-list {
             margin: 1.5rem 0;
         }
 
-        .ingredients-list h3,
-        .instructions-list h3 {
+        .ingredients-list h3, .instructions-list h3 {
             color: #667eea;
             margin-bottom: 1rem;
         }
@@ -450,7 +443,6 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
-
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -462,7 +454,6 @@
         }
     </style>
 </head>
-
 <body>
     <!-- Navigation -->
     <nav class="navbar">
@@ -475,39 +466,18 @@
                 <li><a href="#" class="nav-link">Resep</a></li>
                 <li><a href="#" class="nav-link">Kategori</a></li>
                 <li><a href="#" class="nav-link">Favorit</a></li>
-                @guest
-                    @if (Route::has('login'))
-                        <li class="nav-item">
-                            <a class="btn btn-outline" href="{{ route('login') }}">{{ __('Login') }}</a>
-                        </li>
-                    @endif
+                            @if (Route::has('login'))
+                                <li class="nav-item">
+                                    <a class="btn btn-outline" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                </li>
+                            @endif
 
-                    @if (Route::has('register'))
-                        <li class="nav-item">
-                            <a class="btn btn-primary" href="{{ route('register') }}">{{ __('Register') }}</a>
-                        </li>
-                    @endif
-                @else
-                    <li class="nav-item dropdown">
-                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                            {{ Auth::user()->name }}
-                        </a>
-
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ route('profile.show', auth()->user()) }}">Profile</a>
-                            <a class="dropdown-item" href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
-                                                    document.getElementById('logout-form').submit();">
-                                {{ __('Logout') }}
-                            </a>
-
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
-                        </div>
-                    </li>
-                @endguest
+                            @if (Route::has('register'))
+                                <li class="nav-item">
+                                    <a class="btn btn-primary" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                </li>
+                            @endif
+                        
             </ul>
         </div>
     </nav>
@@ -533,7 +503,7 @@
                         <i class="fas fa-search"></i> Cari
                     </button>
                 </div>
-
+                
                 <div class="category-filter" style="margin-top: 1rem;">
                     <button class="category-btn active" data-category="all">Semua</button>
                     <button class="category-btn" data-category="nasi">🍚 Nasi</button>
@@ -550,15 +520,13 @@
             <h2 style="text-align: center; color: white; margin-bottom: 2rem; font-size: 2rem;">
                 <i class="fas fa-fire"></i> Resep Populer
             </h2>
-
+            
             <div class="recipes-grid" id="recipesGrid">
                 <!-- Recipe Card 1 -->
                 <div class="recipe-card" data-category="nasi" onclick="openModal('nasi-goreng')">
                     <div class="recipe-image">
                         <div class="recipe-difficulty">Mudah</div>
-                        <div
-                            style="width: 100%; height: 100%; background: linear-gradient(45deg, #ff6b6b, #ffd93d); display: flex; align-items: center; justify-content: center; font-size: 3rem;">
-                            🍚</div>
+                        <div style="width: 100%; height: 100%; background: linear-gradient(45deg, #ff6b6b, #ffd93d); display: flex; align-items: center; justify-content: center; font-size: 3rem;">🍚</div>
                     </div>
                     <div class="recipe-content">
                         <h3 class="recipe-title">Nasi Goreng Sederhana</h3>
@@ -581,9 +549,7 @@
                 <div class="recipe-card" data-category="mie" onclick="openModal('mie-ayam')">
                     <div class="recipe-image">
                         <div class="recipe-difficulty">Sedang</div>
-                        <div
-                            style="width: 100%; height: 100%; background: linear-gradient(45deg, #4ecdc4, #44a08d); display: flex; align-items: center; justify-content: center; font-size: 3rem;">
-                            🍜</div>
+                        <div style="width: 100%; height: 100%; background: linear-gradient(45deg, #4ecdc4, #44a08d); display: flex; align-items: center; justify-content: center; font-size: 3rem;">🍜</div>
                     </div>
                     <div class="recipe-content">
                         <h3 class="recipe-title">Mie Ayam Homemade</h3>
@@ -594,8 +560,7 @@
                                 <span>(4.2)</span>
                             </div>
                         </div>
-                        <p style="color: #666; font-size: 0.9rem;">Mie ayam lezat ala warung dengan budget mahasiswa
-                        </p>
+                        <p style="color: #666; font-size: 0.9rem;">Mie ayam lezat ala warung dengan budget mahasiswa</p>
                         <div class="recipe-author">
                             <div class="author-avatar">S</div>
                             <span>Sari Indah</span>
@@ -607,9 +572,7 @@
                 <div class="recipe-card" data-category="gorengan" onclick="openModal('tempe-goreng')">
                     <div class="recipe-image">
                         <div class="recipe-difficulty">Mudah</div>
-                        <div
-                            style="width: 100%; height: 100%; background: linear-gradient(45deg, #f093fb, #f5576c); display: flex; align-items: center; justify-content: center; font-size: 3rem;">
-                            🍟</div>
+                        <div style="width: 100%; height: 100%; background: linear-gradient(45deg, #f093fb, #f5576c); display: flex; align-items: center; justify-content: center; font-size: 3rem;">🍟</div>
                     </div>
                     <div class="recipe-content">
                         <h3 class="recipe-title">Tempe Goreng Crispy</h3>
@@ -632,9 +595,7 @@
                 <div class="recipe-card" data-category="minuman" onclick="openModal('es-teh')">
                     <div class="recipe-image">
                         <div class="recipe-difficulty">Mudah</div>
-                        <div
-                            style="width: 100%; height: 100%; background: linear-gradient(45deg, #a8edea, #fed6e3); display: flex; align-items: center; justify-content: center; font-size: 3rem;">
-                            🥤</div>
+                        <div style="width: 100%; height: 100%; background: linear-gradient(45deg, #a8edea, #fed6e3); display: flex; align-items: center; justify-content: center; font-size: 3rem;">🥤</div>
                     </div>
                     <div class="recipe-content">
                         <h3 class="recipe-title">Es Teh Manis Segar</h3>
@@ -657,9 +618,7 @@
                 <div class="recipe-card" data-category="cemilan" onclick="openModal('pisang-goreng')">
                     <div class="recipe-image">
                         <div class="recipe-difficulty">Mudah</div>
-                        <div
-                            style="width: 100%; height: 100%; background: linear-gradient(45deg, #ffecd2, #fcb69f); display: flex; align-items: center; justify-content: center; font-size: 3rem;">
-                            🍪</div>
+                        <div style="width: 100%; height: 100%; background: linear-gradient(45deg, #ffecd2, #fcb69f); display: flex; align-items: center; justify-content: center; font-size: 3rem;">🍪</div>
                     </div>
                     <div class="recipe-content">
                         <h3 class="recipe-title">Pisang Goreng Keju</h3>
@@ -682,9 +641,7 @@
                 <div class="recipe-card" data-category="nasi" onclick="openModal('nasi-uduk')">
                     <div class="recipe-image">
                         <div class="recipe-difficulty">Sedang</div>
-                        <div
-                            style="width: 100%; height: 100%; background: linear-gradient(45deg, #d299c2, #fef9d7); display: flex; align-items: center; justify-content: center; font-size: 3rem;">
-                            🍚</div>
+                        <div style="width: 100%; height: 100%; background: linear-gradient(45deg, #d299c2, #fef9d7); display: flex; align-items: center; justify-content: center; font-size: 3rem;">🍚</div>
                     </div>
                     <div class="recipe-content">
                         <h3 class="recipe-title">Nasi Uduk Mini</h3>
@@ -746,24 +703,26 @@
                     </ol>
                 </div> --}}
 
-    <div class="rating-section">
-        <h3><i class="fas fa-star"></i> Beri Rating</h3>
-        <div class="rating-form">
-            <div class="star-rating">
-                <span class="star" data-rating="1">★</span>
-                <span class="star" data-rating="2">★</span>
-                <span class="star" data-rating="3">★</span>
-                <span class="star" data-rating="4">★</span>
-                <span class="star" data-rating="5">★</span>
+                <div class="rating-section">
+                    <h3><i class="fas fa-star"></i> Beri Rating</h3>
+                    <div class="rating-form">
+                        <div class="star-rating">
+                            <span class="star" data-rating="1">★</span>
+                            <span class="star" data-rating="2">★</span>
+                            <span class="star" data-rating="3">★</span>
+                            <span class="star" data-rating="4">★</span>
+                            <span class="star" data-rating="5">★</span>
+                        </div>
+                        <button class="btn btn-primary">Kirim Rating</button>
+                    </div>
+                </div>
             </div>
-            <button class="btn btn-primary">Kirim Rating</button>
         </div>
     </div>
-    </div>
-    </div>
-    </div>
 
-    {{-- <!-- Floating Action Button -->
+    <!-- Floating Action Button -->
     <button class="fab" title="Tambah Resep Baru">
         <a href="{{ route('resep.create') }}" class="fas fa-plus" style="text-decoration: none;"></a>
-    </button> --}}
+    </button>
+    
+

@@ -1,12 +1,12 @@
 <?php
- 
+
 namespace App\Http\Middleware;
- 
+
 use App\Models\Role;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
- 
+
 class AdminMiddleware
 {
     /**
@@ -14,7 +14,7 @@ class AdminMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-     public function handle(Request $request, Closure $next): Response
+    public function handle(Request $request, Closure $next): Response
     {
         $role_id = $request->user()->role_id;
         $admin_role = Role::where('name', 'admin')->first()->id;
