@@ -1,21 +1,4 @@
-<!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
-
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-    <style>
-        * {
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -169,13 +152,13 @@ body {
     border-color: #667eea;
 }
 
-.category-filter {
+.kategori-filter {
     display: flex;
     gap: 0.5rem;
     flex-wrap: wrap;
 }
 
-.category-btn {
+.kategori-btn {
     padding: 0.5rem 1rem;
     background: #f8f9fa;
     border: 2px solid transparent;
@@ -184,24 +167,24 @@ body {
     transition: all 0.3s;
 }
 
-.category-btn.active {
+.kategori-btn.active {
     background: #667eea;
     color: white;
 }
 
-.category-btn:hover {
+.kategori-btn:hover {
     border-color: #667eea;
 }
 
-/*  Grid */
-.s-grid {
+/* resep Grid */
+.reseps-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 2rem;
     margin: 2rem 0;
 }
 
-.-card {
+.resep-card {
     background: white;
     border-radius: 15px;
     overflow: hidden;
@@ -210,25 +193,25 @@ body {
     cursor: pointer;
 }
 
-.-card:hover {
+.resep-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 20px 40px rgba(0,0,0,0.15);
 }
 
-.-image {
+.resep-image {
     width: 100%;
     height: 200px;
     position: relative;
     overflow: hidden;
 }
 
-.-image img {
+.resep-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.-difficulty {
+.resep-difficulty {
     position: absolute;
     top: 1rem;
     right: 1rem;
@@ -239,18 +222,18 @@ body {
     font-size: 0.8rem;
 }
 
-.-content {
+.resep-content {
     padding: 1.5rem;
 }
 
-.-title {
+.resep-title {
     font-size: 1.3rem;
     font-weight: bold;
     margin-bottom: 0.5rem;
     color: #333;
 }
 
-.-meta {
+.resep-meta {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -259,7 +242,7 @@ body {
     color: #666;
 }
 
-.-rating {
+.resep-rating {
     display: flex;
     align-items: center;
     gap: 0.3rem;
@@ -269,7 +252,7 @@ body {
     color: #ffc107;
 }
 
-.-author {
+.resep-author {
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -407,7 +390,7 @@ body {
         min-width: 100%;
     }
 
-    .s-grid {
+    .reseps-grid {
         grid-template-columns: 1fr;
     }
 
@@ -428,116 +411,6 @@ body {
     }
 }
 
-.-card {
+.resep-card {
     animation: fadeInUp 0.6s ease-out;
-}  </style>
-
-    <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
-</head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
-            <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-                        <ul class="navbar-nav me-auto">
-
-                            
-
-                        </ul>
-
-                    </ul>
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Menu berdasarkan Role -->
-                        @auth
-                        @if(Auth::user()->role->name === 'admin')
-                            <!-- Menu Admin -->
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('admin.dashboard') }}">Dashboard</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('users.index') }}">Users</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('profile.show') }}">Profile</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('resep.index') }}">Resep</a>
-                            </li>
-                             <li class="nav-item">
-                                <a class="nav-link" href="{{ route('kategori.index') }}">Kategori</a>
-                            </li>
-                        @else
-
-                            <!-- Menu User -->
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('home') }}">Home</a>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ route('resep.index') }}">Resep</a>
-                            </li>
-
-                            @endif
-                        @endauth
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
-
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-            </div>
-        </nav>
-
-        <main class="py-4">
-            @yield('content')
-        </main>
-    </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdn.datatables.net/2.2.2/js/dataTables.min.js"></script>
-    <script>
-        $(document).ready(function(){
-            let table = new DataTable('#data-table');
-        });
-    </script>
-</body>
-</html>
+}  

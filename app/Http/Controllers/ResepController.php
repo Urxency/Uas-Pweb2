@@ -29,6 +29,7 @@ class ResepController extends Controller
         'bahan_resep' => 'required|string',
         'langkah_resep' => 'required|string',
         'kategori_id' => 'required|exists:kategoris,id',
+        'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
     ]);
 
     Resep::create([
@@ -36,6 +37,7 @@ class ResepController extends Controller
         'bahan_resep'   => $validated['bahan_resep'],
         'langkah_resep' => $validated['langkah_resep'],
         'kategori_id'   => $validated['kategori_id'],
+        'gambar'        => $validated ['gambar'],
         'user_id'       => Auth::id(),
     ]);
 
@@ -59,12 +61,15 @@ class ResepController extends Controller
                 'bahan_resep' => 'required|string',
                 'langkah_resep' => 'required|string',
                 'kategori_id' => 'required|exists:kategoris,id',
+                'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
             ],
             [
                 'judul_resep.required' => 'Nama resep wajib diisi.',
                 'bahan_resep.required' => 'bahan resep wajib diisi.',
                 'langkah_resep.required' => 'langkah resep wajib diisi.',
                 'kategori_id.required' => 'kategori wajib diisi.',
+                'gambar' => 'gambar wajib diisi.',
+
             ],
         );
 
@@ -74,6 +79,8 @@ class ResepController extends Controller
             'bahan_resep' => $request->bahan_resep,
             'langkah_resep' => $request->langkah_resep,
             'kategori_id' => $request->kategori_id, 
+            'gambar' => $request->gambar, 
+
         ]);
 
         return redirect()->route('resep.index')->with('success', 'resep berhasil diperbarui');
@@ -92,4 +99,15 @@ class ResepController extends Controller
 
         return redirect()->route('resep.index')->with('success', 'resep berhasil dihapus');
     }
+
+    public function search(Request $request)
+{
+    $query = $request->q;
+
+    $resep = Resep::where('judul_resep', 'like', '%' . $query . '%')
+        ->orWhere('bahan_resep', 'like', '%' . $query . '%')
+        ->get();
+
+    return view('resep.index', compact('resep'));
+}
 }
