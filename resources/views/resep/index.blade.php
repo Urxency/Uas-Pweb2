@@ -20,6 +20,7 @@
                                 <th>NO</th>
                                 <th>Nama Resep</th>
                                 <th>Kategori</th>
+                                <th>Durasi</th>
                                 <th>Bahan</th>
                                 <th>Langkah</th>
                                 <th>Gambar</th>
@@ -32,6 +33,7 @@
                                     <td>{{ $index + 1 }}</td>
                                     <td><strong>{{ $data->judul_resep }}</strong></td>
                                     <td><strong>{{ $data->kategori?->nama_kategori ?? '-' }}</strong></td>
+                                    <td><strong>{{ $data->kategori?->durasi ?? '-' }}</strong></td>
                                     <td><strong>{{ $data->bahan_resep }}</strong></td>
                                     <td><strong>{{ $data->langkah_resep }}</strong></td>
                                     <td><strong>

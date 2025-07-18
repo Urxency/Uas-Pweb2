@@ -34,7 +34,21 @@
                         @error('kategori_id')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
-
+                    </div>
+                    <div class="form-group my-2">
+                        <label for="durasi">Durasi</label>
+                        <select class="form-select @error('durasi') is-invalid @enderror" name="durasi"
+                            id="durasi">
+                            <option selected disabled>Pilih kategori</option>
+                            @foreach ($kategori as $item)
+                                <option value="{{ $item->durasi }}" {{ old('durasi') == $item->id ? 'selected' : '' }}>
+                                    {{ $item->durasi }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('durasi')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
                     </div>
 
                     <div class="form-group my-2">
@@ -55,14 +69,14 @@
                         @enderror
                     </div>
 
-                    <div class="form-group my-2">
+                    {{-- <div class="form-group my-2">
                         <label for="gambar">Gambar Resep</label>
                         <input type="file" class="form-control @error('gambar') is-invalid @enderror" name="gambar"
                             id="gambar" accept="image/*">
                         @error('gambar')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
-                    </div>
+                    </div> --}}
 
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>

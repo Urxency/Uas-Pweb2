@@ -42,7 +42,7 @@ class ResepController extends Controller
 
         Resep::create([
             'judul_resep'   => $request->judul_resep,
-            'kategori_id'   => $request->kategori,
+            'kategori_id'   => $request->kategori_id,
             'bahan_resep'   => $request->bahan_resep,
             'langkah_resep' => $request->langkah_resep,
             'gambar'        => $gambarPath,

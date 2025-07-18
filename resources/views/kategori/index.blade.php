@@ -19,6 +19,7 @@
                             <tr>
                                 <th>No</th>
                                 <th>Nama kategori</th>
+                                <th>Durasi</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -27,6 +28,7 @@
                                 <tr>
                                     <td>{{ $index + 1 }}</td>
                                     <td><strong>{{ $data->nama_kategori }}</strong></td>
+                                    <td><strong>{{ $data->durasi }}</strong></td>
                                     <td>
                                         <div class="btn-group btn-group-sm" role="group">
                                                 <a href="{{ route('kategori.show', $data->id) }}"

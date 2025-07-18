@@ -15,10 +15,11 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
             line-height: 1.6;
             color: #333;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -287,81 +288,7 @@
             font-weight: bold;
         }
 
-        /* Recipe Detail Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 2000;
-            overflow-y: auto;
-        }
 
-        .modal-content {
-            background: white;
-            max-width: 800px;
-            margin: 2rem auto;
-            border-radius: 15px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: rgba(0, 0, 0, 0.5);
-            color: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 10;
-        }
-
-        .modal-image {
-            width: 100%;
-            height: 300px;
-            background: linear-gradient(45deg, #ff9a9e, #fecfef);
-        }
-
-        .modal-body {
-            padding: 2rem;
-        }
-
-        .ingredients-list,
-        .instructions-list {
-            margin: 1.5rem 0;
-        }
-
-        .ingredients-list h3,
-        .instructions-list h3 {
-            color: #667eea;
-            margin-bottom: 1rem;
-        }
-
-        .ingredients-list ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .ingredients-list li {
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .instructions-list ol {
-            padding-left: 1.5rem;
-        }
-
-        .instructions-list li {
-            margin: 1rem 0;
-            line-height: 1.6;
-        }
 
         /* Rating Section */
         .rating-section {
@@ -433,7 +360,20 @@
             transform: rotateY(180deg);
         }
 
-        .recipe-card-front,
+        .recipe-card-front {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            backface-visibility: hidden;
+            overflow: hidden;
+            background: white;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
         .recipe-card-back {
             position: absolute;
             width: 100%;
@@ -444,6 +384,14 @@
             background: white;
             padding: 1.5rem;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .recipe-card-front:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
         }
 
         .recipe-card-back {
@@ -491,6 +439,10 @@
         }
 
         .recipe-card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .recipe-card-front {
             animation: fadeInUp 0.6s ease-out;
         }
     </style>
@@ -591,7 +543,17 @@
                         <div class="recipe-card-inner">
                             <!-- Sisi Depan -->
                             <div class="recipe-card-front">
-                                <h3>{{ $item->judul_resep }}</h3>
+                                <div class="recipe-image">
+                                    <div class="recipe-difficulty"> {{ $item->kategori->nama_kategori }}</div>
+                                    <div
+                                        style="width: 100%; height: 100%; background: linear-gradient(45deg, #f093fb, #f5576c); display: flex; align-items: center; justify-content: center; font-size: 3rem;">
+                                        🍟</div>
+                                </div>
+                                <h3 class="recipe-title">{{ $item->judul_resep }}</h3>
+                                <div class="recipe-meta">
+                                    <h3 style="color: #666; font-size: 0.9rem;"><i
+                                            class="fas fa-clock"></i>{{ $item->kategori->durasi }}</h3>
+                                </div>
                                 @if ($item->gambar)
                                     <img src="{{ asset('storage/' . $item->gambar) }}" alt="Gambar Resep"
                                         style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px;">
