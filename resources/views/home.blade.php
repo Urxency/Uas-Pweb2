@@ -218,7 +218,7 @@
             height: 200px;
             position: relative;
         }
-        
+
 
         .recipe-image img {
             width: 100%;
@@ -377,6 +377,7 @@
             justify-content: start;
             overflow-y: auto;
         }
+
         .recipe-card-back {
             transform: rotateY(180deg);
         }
@@ -386,7 +387,7 @@
             color: #444;
             margin-bottom: 0.5rem;
         }
-        
+
 
 
         h2.section-title {
@@ -511,11 +512,17 @@
         <!-- Search & Filter Section -->
         <section class="search-section">
             <div class="container">
-                <div class="search-container">
-                    <input type="text" class="search-input" placeholder="Cari resep masakan..." id="searchInput">
-                    <button class="btn btn-primary">
-                        <i class="fas fa-search"></i> Cari
-                    </button>
+                
+                    {{-- <input type="text" class="search-input" placeholder="Cari resep masakan..." id="searchInput"> --}}
+                    <form action="{{ route('resep.index') }}" method="GET"
+                        class="search-container">
+                        <input type="text" class="search-input" name="search" placeholder="Cari resep..." value="{{ request('search') }}">
+                        <button type="submit"
+                            class="btn btn-primary"><i class="fas fa-search"></i>
+                            Cari
+                        </button>
+                    </form>
+                    
                 </div>
 
                 <div class="category-filter" style="margin-top: 1rem;">
@@ -532,50 +539,51 @@
         <!-- Recipes Section -->
         <section id="recipes" class="container">
             <h2 class="section-title">
-            <i class="fas fa-fire"></i> Resep Populer
-        </h2>
+                <i class="fas fa-fire"></i> Resep Populer
+            </h2>
 
-           <div class="recipes-grid">
-            @foreach ($resep as $item)
-                <div class="recipe-card-wrapper">
-                    <div class="recipe-card-inner">
-                        <!-- Sisi Depan -->
-                        <div class="recipe-card-front">
-                            <div class="recipe-image">
-                                <div class="recipe-difficulty">
-                                    {{ $item->kategori->nama_kategori }}
-                                </div>
-                                @if ($item->gambar)
-                                    <img src="{{ asset('storage/' . $item->gambar) }}" alt="Gambar Resep">
-                                @else
-                                    <div
-                                        style="width: 100%; height: 100%; background: linear-gradient(45deg, #f093fb, #f5576c); display: flex; align-items: center; justify-content: center; font-size: 3rem;">
-                                        🍽️
+            <div class="recipes-grid">
+                @foreach ($resep as $item)
+                
+                    <div class="recipe-card-wrapper">
+                        <div class="recipe-card-inner">
+                            <!-- Sisi Depan -->
+                            <div class="recipe-card-front">
+                                <div class="recipe-image">
+                                    <div class="recipe-difficulty">
+                                        {{ $item->kategori->nama_kategori }}
                                     </div>
-                                @endif
+                                    @if ($item->gambar)
+                                        <img src="{{ asset('storage/' . $item->gambar) }}" alt="Gambar Resep">
+                                    @else
+                                        <div
+                                            style="width: 100%; height: 100%; background: linear-gradient(45deg, #f093fb, #f5576c); display: flex; align-items: center; justify-content: center; font-size: 3rem;">
+                                            🍽️
+                                        </div>
+                                    @endif
+                                </div>
+                                <h3 class="recipe-title">{{ $item->judul_resep }}</h3>
+                                <div class="recipe-meta">
+                                    <i class="fas fa-clock"></i> {{ $item->kategori->durasi }}
+                                </div>
+                                <p style="font-size: 0.9rem; color: #666;">Klik untuk melihat detail resep</p>
                             </div>
-                            <h3 class="recipe-title">{{ $item->judul_resep }}</h3>
-                            <div class="recipe-meta">
-                                <i class="fas fa-clock"></i> {{ $item->kategori->durasi }}
+
+                            <!-- Sisi Belakang -->
+                            <div class="recipe-card-back">
+                                <strong>Bahan:</strong>
+                                <p>{!! nl2br(e($item->bahan_resep)) !!}</p>
+
+                                <strong>Langkah:</strong>
+                                <p>{!! nl2br(e($item->langkah_resep)) !!}</p>
                             </div>
-                            <p style="font-size: 0.9rem; color: #666;">Klik untuk melihat detail resep</p>
-                        </div>
-
-                        <!-- Sisi Belakang -->
-                        <div class="recipe-card-back">
-                            <strong>Bahan:</strong>
-                            <p>{!! nl2br(e($item->bahan_resep)) !!}</p>
-
-                            <strong>Langkah:</strong>
-                            <p>{!! nl2br(e($item->langkah_resep)) !!}</p>
                         </div>
                     </div>
-                </div>
-            @endforeach
-        </div>
+                @endforeach
+            </div>
 
-                <!-- Recipe Card 2 -->
-                {{-- <div class="recipe-card" data-category="mie" onclick="openModal('mie-ayam')">
+            <!-- Recipe Card 2 -->
+            {{-- <div class="recipe-card" data-category="mie" onclick="openModal('mie-ayam')">
                     <div class="recipe-image">
                         <div class="recipe-difficulty">Sedang</div>
                         <div
@@ -600,8 +608,8 @@
                     </div>
                 </div> --}}
 
-                <!-- Recipe Card 3 -->
-                {{-- <div class="recipe-card" data-category="gorengan" onclick="openModal('tempe-goreng')">
+            <!-- Recipe Card 3 -->
+            {{-- <div class="recipe-card" data-category="gorengan" onclick="openModal('tempe-goreng')">
                     <div class="recipe-image">
                         <div class="recipe-difficulty">Mudah</div>
                         <div
@@ -698,7 +706,7 @@
                             <span>Fadli Rahman</span>
                         </div>
                     </div> --}}
-                </div>
+            </div>
             </div>
         </section>
     </main>

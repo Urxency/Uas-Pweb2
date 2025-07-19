@@ -13,8 +13,10 @@ class ResepController extends Controller
     // Tampilkan semua resep
     public function index()
     {
+        
         $reseps = Resep::latest()->paginate(10);
         return view('resep.index', compact('reseps'));
+        
     }
 
     // Form tambah resep
