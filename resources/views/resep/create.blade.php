@@ -69,14 +69,14 @@
                         @enderror
                     </div>
 
-                    {{-- <div class="form-group my-2">
+                    <div class="form-group my-2">
                         <label for="gambar">Gambar Resep</label>
                         <input type="file" class="form-control @error('gambar') is-invalid @enderror" name="gambar"
                             id="gambar" accept="image/*">
                         @error('gambar')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
-                    </div> --}}
+                    </div>
 
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>

@@ -11,7 +11,7 @@ class ProfileController extends Controller
 {
     public function show($id)
     {
-        $user = User::findOrFail($id); // cari user berdasarkan ID, jika tidak ditemukan akan 404
+        $user = User::findOrFail($id);
         return view('profile.show', compact('user'));
     }
 
@@ -19,7 +19,7 @@ class ProfileController extends Controller
 {
     $user = User::findOrFail($id);
     
-    // Tambahkan pengecekan agar user hanya bisa edit dirinya sendiri
+
     if (auth()->id() != $user->id) {
         abort(403);
     }
@@ -31,7 +31,7 @@ public function update(Request $request, $id)
 {
     $user = User::findOrFail($id);
 
-    // Tambahkan pengecekan agar user hanya bisa update dirinya sendiri
+    
     if (auth()->id() != $user->id) {
         abort(403);
     }
