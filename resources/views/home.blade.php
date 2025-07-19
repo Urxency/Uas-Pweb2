@@ -472,8 +472,8 @@
             </a>
             <ul class="nav-menu">
                 <li><a href="#" class="nav-link">Beranda</a></li>
-                <li><a href="#" class="nav-link">Resep</a></li>
-                <li><a href="#" class="nav-link">Kategori</a></li>
+                <li><a href="{{ route ('resep.index') }}" class="nav-link">Resep</a></li>
+                <li><a href="{{ route ('rating.create') }}" class="nav-link">Rating</a></li>
                 <li><a href="#" class="nav-link">Favorit</a></li>
                 @guest
                     @if (Route::has('login'))
@@ -495,7 +495,7 @@
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="{{ route('profile.show', auth()->user()) }}">Profile</a>
+                            <a class="dropdown-item" href="{{ route('profile.show', auth()->user()) }}">Profile</a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
                                                     document.getElementById('logout-form').submit();">

@@ -463,7 +463,7 @@
             </a>
             <ul class="nav-menu">
                 <li><a href="#" class="nav-link">Beranda</a></li>
-                <li><a href="#" class="nav-link">Resep</a></li>
+                <li><a href="{{route('resep.index') }}" class="nav-link">Resep</a></li>
                 <li><a href="#" class="nav-link">Kategori</a></li>
                 <li><a href="#" class="nav-link">Favorit</a></li>
                             @if (Route::has('login'))
