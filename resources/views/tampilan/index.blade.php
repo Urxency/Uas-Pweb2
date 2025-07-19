@@ -663,46 +663,6 @@
         </section>
     </main>
 
-    {{-- <!-- Recipe Detail Modal -->
-    <div class="modal" id="recipeModal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">×</button>
-            <div class="modal-image" id="modalImage"></div>
-            <div class="modal-body">
-                <h2 id="modalTitle">Nasi Goreng Sederhana</h2>
-                <div class="recipe-meta">
-                    <span><i class="fas fa-clock"></i> <span id="modalTime">15 menit</span></span>
-                    <span><i class="fas fa-users"></i> <span id="modalServing">2 porsi</span></span>
-                    <div class="recipe-rating">
-                        <span class="stars" id="modalRating">★★★★★</span>
-                        <span id="modalRatingText">(4.5)</span>
-                    </div>
-                </div>
-
-                <div class="ingredients-list">
-                    <h3><i class="fas fa-list"></i> Bahan-bahan</h3>
-                    <ul id="modalIngredients">
-                        <li>2 piring nasi putih</li>
-                        <li>2 butir telur</li>
-                        <li>3 siung bawang putih</li>
-                        <li>2 sdm kecap manis</li>
-                        <li>1 sdt garam</li>
-                        <li>Minyak goreng secukupnya</li>
-                    </ul>
-                </div>
-
-                <div class="instructions-list">
-                    <h3><i class="fas fa-clipboard-list"></i> Cara Membuat</h3>
-                    <ol id="modalInstructions">
-                        <li>Panaskan minyak di wajan, tumis bawang putih hingga harum</li>
-                        <li>Masukkan telur, orak-arik hingga matang</li>
-                        <li>Tambahkan nasi putih, aduk rata</li>
-                        <li>Beri kecap manis dan garam, aduk hingga merata</li>
-                        <li>Masak hingga nasi panas dan bumbu meresap</li>
-                        <li>Nasi goreng siap disajikan</li>
-                    </ol>
-                </div> --}}
-
                 <div class="rating-section">
                     <h3><i class="fas fa-star"></i> Beri Rating</h3>
                     <div class="rating-form">
@@ -725,4 +685,9 @@
         <a href="{{ route('resep.create') }}" class="fas fa-plus" style="text-decoration: none;"></a>
     </button>
     
-
+<script>
+    const card = document.getElementById("recipesGrid");
+    card.addEventListener("click", () => {
+      card.classList.toggle("flipped");
+    });
+  </script>

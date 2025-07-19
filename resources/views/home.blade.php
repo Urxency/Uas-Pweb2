@@ -15,10 +15,11 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: Arial, Helvetica, sans-serif;
             line-height: 1.6;
             color: #333;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -287,81 +288,7 @@
             font-weight: bold;
         }
 
-        /* Recipe Detail Modal */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            z-index: 2000;
-            overflow-y: auto;
-        }
 
-        .modal-content {
-            background: white;
-            max-width: 800px;
-            margin: 2rem auto;
-            border-radius: 15px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .modal-close {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: rgba(0, 0, 0, 0.5);
-            color: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            z-index: 10;
-        }
-
-        .modal-image {
-            width: 100%;
-            height: 300px;
-            background: linear-gradient(45deg, #ff9a9e, #fecfef);
-        }
-
-        .modal-body {
-            padding: 2rem;
-        }
-
-        .ingredients-list,
-        .instructions-list {
-            margin: 1.5rem 0;
-        }
-
-        .ingredients-list h3,
-        .instructions-list h3 {
-            color: #667eea;
-            margin-bottom: 1rem;
-        }
-
-        .ingredients-list ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .ingredients-list li {
-            padding: 0.5rem 0;
-            border-bottom: 1px solid #eee;
-        }
-
-        .instructions-list ol {
-            padding-left: 1.5rem;
-        }
-
-        .instructions-list li {
-            margin: 1rem 0;
-            line-height: 1.6;
-        }
 
         /* Rating Section */
         .rating-section {
@@ -417,6 +344,60 @@
             box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
         }
 
+        .recipe-card-wrapper {
+            perspective: 1000px;
+        }
+
+        .recipe-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .recipe-card-wrapper.flipped .recipe-card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .recipe-card-front {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            backface-visibility: hidden;
+            overflow: hidden;
+            background: white;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .recipe-card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            overflow: hidden;
+            background: white;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .recipe-card-front:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .recipe-card-back {
+            transform: rotateY(180deg);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             .nav-menu {
@@ -458,6 +439,10 @@
         }
 
         .recipe-card {
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .recipe-card-front {
             animation: fadeInUp 0.6s ease-out;
         }
     </style>
@@ -553,32 +538,43 @@
 
             <div class="recipes-grid" id="recipesGrid">
                 <!-- Recipe Card 1 -->
-                <div class="recipe-card" data-category="nasi" onclick="openModal('nasi-goreng')">
-                    <div class="recipe-image">
-                        <div class="recipe-difficulty">Mudah</div>
-                        <div
-                            style="width: 100%; height: 100%; background: linear-gradient(45deg, #ff6b6b, #ffd93d); display: flex; align-items: center; justify-content: center; font-size: 3rem;">
-                            🍚</div>
-                    </div>
-                    <div class="recipe-content">
-                        <h3 class="recipe-title">Nasi Goreng Sederhana</h3>
-                        <div class="recipe-meta">
-                            <span><i class="fas fa-clock"></i> 15 menit</span>
-                            <div class="recipe-rating">
-                                <span class="stars">★★★★★</span>
-                                <span>(4.5)</span>
+                @foreach ($resep as $item)
+                    <div class="recipe-card-wrapper">
+                        <div class="recipe-card-inner">
+                            <!-- Sisi Depan -->
+                            <div class="recipe-card-front">
+                                <div class="recipe-image">
+                                    <div class="recipe-difficulty"> {{ $item->kategori->nama_kategori }}</div>
+                                    <div
+                                        style="width: 100%; height: 100%; background: linear-gradient(45deg, #f093fb, #f5576c); display: flex; align-items: center; justify-content: center; font-size: 3rem;">
+                                        🍟</div>
+                                </div>
+                                <h3 class="recipe-title">{{ $item->judul_resep }}</h3>
+                                <div class="recipe-meta">
+                                    <h3 style="color: #666; font-size: 0.9rem;"><i
+                                            class="fas fa-clock"></i>{{ $item->kategori->durasi }}</h3>
+                                </div>
+                                @if ($item->gambar)
+                                    <img src="{{ asset('storage/' . $item->gambar) }}" alt="Gambar Resep"
+                                        style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px;">
+                                @endif
+                                <p style="font-size: 0.9rem; color: #666;">Klik untuk melihat detail resep</p>
+                            </div>
+
+                            <!-- Sisi Belakang -->
+                            <div class="recipe-card-back">
+                                <strong>Bahan:</strong>
+                                <p>{!! nl2br(e($item->bahan_resep)) !!}</p>
+
+                                <strong>Langkah:</strong>
+                                <p>{!! nl2br(e($item->langkah_resep)) !!}</p>
                             </div>
                         </div>
-                        <p style="color: #666; font-size: 0.9rem;">Nasi goreng praktis dengan bahan seadanya di kos</p>
-                        <div class="recipe-author">
-                            <div class="author-avatar">A</div>
-                            <span>Ahmad Rizki</span>
-                        </div>
                     </div>
-                </div>
+                @endforeach
 
                 <!-- Recipe Card 2 -->
-                <div class="recipe-card" data-category="mie" onclick="openModal('mie-ayam')">
+                {{-- <div class="recipe-card" data-category="mie" onclick="openModal('mie-ayam')">
                     <div class="recipe-image">
                         <div class="recipe-difficulty">Sedang</div>
                         <div
@@ -601,7 +597,7 @@
                             <span>Sari Indah</span>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
                 <!-- Recipe Card 3 -->
                 <div class="recipe-card" data-category="gorengan" onclick="openModal('tempe-goreng')">
@@ -767,3 +763,13 @@
     <button class="fab" title="Tambah Resep Baru">
         <a href="{{ route('resep.create') }}" class="fas fa-plus" style="text-decoration: none;"></a>
     </button> --}}
+
+
+    <script>
+        document.querySelectorAll('.recipe-card-wrapper').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('flipped');
+            });
+        });
+    </script>
+>>>>>>> 9e0262df75b39ec1e8a1601fa64fff1f3ba316bf

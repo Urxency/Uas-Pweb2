@@ -18,10 +18,10 @@ return new class extends Migration {
     $table->text('bahan_resep');
     $table->text('langkah_resep');
     $table->string('gambar')->nullable();
-
     $table->timestamps();
 });
     }
+    
 
     /**
      * Reverse the migrations.

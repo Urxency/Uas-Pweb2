@@ -1,113 +1,116 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Resep;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;    
 use App\Models\Kategori;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ResepController extends Controller
 {
+    // Tampilkan semua resep
     public function index()
     {
-        $resep = Resep::all();
-        return view('resep.index', compact('resep'));
+        $reseps = Resep::latest()->paginate(10);
+        return view('resep.index', compact('reseps'));
     }
 
-    public function create()
-    {
+    // Form tambah resep
+    public function create(){
+
     $kategori = Kategori::all(); // Ambil semua kategori
     return view('resep.create', compact('kategori'));
     }
-
-    
-
+    // Simpan data resep baru
     public function store(Request $request)
-{
-    $validated = $request->validate([
-        'judul_resep' => 'required|string|max:255',
-        'bahan_resep' => 'required|string',
-        'langkah_resep' => 'required|string',
-        'kategori_id' => 'required|exists:kategoris,id',
-        'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
-    ]);
-
-    Resep::create([
-        'judul_resep'   => $validated['judul_resep'],
-        'bahan_resep'   => $validated['bahan_resep'],
-        'langkah_resep' => $validated['langkah_resep'],
-        'kategori_id'   => $validated['kategori_id'],
-        'gambar'        => $validated ['gambar'],
-        'user_id'       => Auth::id(),
-    ]);
-
-    return redirect()->route('resep.index')->with('success', 'Resep berhasil ditambahkan');
-}
-
-
-
-    public function edit($id)
     {
-        $resep = Resep::findOrfail($id);
-        $kategori = Kategori::all();
-        return view('resep.edit', compact('resep','kategori'));
-    }
-
-    public function update(Request $request, $id)
-    {
-        $request->validate(
-            [
-                'judul_resep' => 'required|string|max:255',
-                'bahan_resep' => 'required|string',
-                'langkah_resep' => 'required|string',
-                'kategori_id' => 'required|exists:kategoris,id',
-                'gambar' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
-            ],
-            [
-                'judul_resep.required' => 'Nama resep wajib diisi.',
-                'bahan_resep.required' => 'bahan resep wajib diisi.',
-                'langkah_resep.required' => 'langkah resep wajib diisi.',
-                'kategori_id.required' => 'kategori wajib diisi.',
-                'gambar' => 'gambar wajib diisi.',
-
-            ],
-        );
-
-        $resep = Resep::findOrfail($id);
-        $resep->update([
-            'judul_resep' => $request->judul_resep,
-            'bahan_resep' => $request->bahan_resep,
-            'langkah_resep' => $request->langkah_resep,
-            'kategori_id' => $request->kategori_id, 
-            'gambar' => $request->gambar, 
-
+        $request->validate([
+            'judul_resep'    => 'required|string|max:255',
+            'kategori_id'  => 'required|exists:kategoris,id',
+            'bahan_resep'    => 'required|string',
+            'langkah_resep'  => 'required|string',
+            'gambar'         => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        return redirect()->route('resep.index')->with('success', 'resep berhasil diperbarui');
+        $gambarPath = null;
+        if ($request->hasFile('gambar')) {
+            $gambarPath = $request->file('gambar')->store('gambar', 'public');
+        }
+
+        Resep::create([
+            'judul_resep'   => $request->judul_resep,
+            'kategori_id'   => $request->kategori_id,
+            'bahan_resep'   => $request->bahan_resep,
+            'langkah_resep' => $request->langkah_resep,
+            'gambar'        => $gambarPath,
+            'user_id'       => Auth::id(), // Jika pakai auth
+        ]);
+
+        return redirect()->route('resep.index')->with('success', 'Resep berhasil ditambahkan.');
     }
 
-    public function show($id)
+    // Form edit resep
+    public function edit($id)
     {
-        $resep = Resep::findOrfail($id);
-        return view('resep.show', compact('resep'));
+        $resep = Resep::findOrFail($id);
+        $kategori = Kategori::all();
+
+        return view('resep.edit', compact('resep', 'kategori'));
     }
 
+    // Update resep
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'judul_resep'    => 'required|string|max:255',
+            'kategori_id'    => 'required|exists:kategoris,id',
+            'bahan_resep'    => 'required|string',
+            'langkah_resep'  => 'required|string',
+            'gambar'         => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+        ]);
+
+        $resep = Resep::findOrFail($id);
+
+        if ($request->hasFile('gambar')) {
+            // Hapus gambar lama jika ada
+            if ($resep->gambar && Storage::disk('public')->exists($resep->gambar)) {
+                Storage::disk('public')->delete($resep->gambar);
+            }
+
+            $resep->gambar = $request->file('gambar')->store('gambar', 'public');
+        }
+
+        $resep->update([
+            'judul_resep'   => $request->judul_resep,
+            'kategori_id'   => $request->kategori_id,
+            'bahan_resep'   => $request->bahan_resep,
+            'langkah_resep' => $request->langkah_resep,
+        ]);
+
+        return redirect()->route('resep.index')->with('success', 'Resep berhasil diperbarui.');
+    }
+
+    // Tampilkan detail satu resep
+public function show($id)
+{
+    $resep = Resep::with('kategori', 'user')->findOrFail($id);
+
+    return view('resep.show', compact('resep'));
+}
+
+    // Hapus resep
     public function destroy($id)
     {
-        $resep = Resep::findOrfail($id);
+        $resep = Resep::findOrFail($id);
+
+        if ($resep->gambar && Storage::disk('public')->exists($resep->gambar)) {
+            Storage::disk('public')->delete($resep->gambar);
+        }
+
         $resep->delete();
 
-        return redirect()->route('resep.index')->with('success', 'resep berhasil dihapus');
+        return redirect()->route('resep.index')->with('success', 'Resep berhasil dihapus.');
     }
-
-    public function search(Request $request)
-{
-    $query = $request->q;
-
-    $resep = Resep::where('judul_resep', 'like', '%' . $query . '%')
-        ->orWhere('bahan_resep', 'like', '%' . $query . '%')
-        ->get();
-
-    return view('resep.index', compact('resep'));
-}
 }

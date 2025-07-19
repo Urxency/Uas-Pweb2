@@ -1,9 +1,10 @@
 <?php
  
 namespace App\Http\Controllers;
+
  
 use Illuminate\Http\Request;
- 
+use App\Models\Resep;
 class HomeController extends Controller
 {
     /**
@@ -23,10 +24,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $resep = Resep::latest()->take(6)->get(); // ambil 6 resep terbaru, bisa disesuaikan
+    return view('home', compact('resep'));
     }
     public function produk() {
         return "ini contoh untuk halaman produk";
     }
 }
- 
