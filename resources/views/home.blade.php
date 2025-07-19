@@ -195,7 +195,7 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 2rem;
-            margin: 2rem 0;
+            padding: 2rem;
         }
 
         .recipe-card {
@@ -205,25 +205,26 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             transition: all 0.3s;
             cursor: pointer;
+            perspective: 1000px;
         }
 
-        .recipe-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        .recipe-card-inner:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px rgba(0, 0, 0, 0);
         }
 
         .recipe-image {
             width: 100%;
             height: 200px;
-            background: linear-gradient(45deg, #ff9a9e, #fecfef);
             position: relative;
-            overflow: hidden;
         }
+        
 
         .recipe-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            border-radius: 10px;
         }
 
         .recipe-difficulty {
@@ -242,19 +243,15 @@
         }
 
         .recipe-title {
+            margin-top: 1rem;
             font-size: 1.3rem;
             font-weight: bold;
-            margin-bottom: 0.5rem;
-            color: #333;
         }
 
         .recipe-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 1rem 0;
             font-size: 0.9rem;
             color: #666;
+            margin-top: 0.5rem;
         }
 
         .recipe-rating {
@@ -345,7 +342,12 @@
         }
 
         .recipe-card-wrapper {
+            width: 100%;
+            height: 100%;
+            min-height: 440px;
+            position: relative;
             perspective: 1000px;
+            overflow: hidden;
         }
 
         .recipe-card-inner {
@@ -360,43 +362,40 @@
             transform: rotateY(180deg);
         }
 
-        .recipe-card-front {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 15px;
-            backface-visibility: hidden;
-            overflow: hidden;
-            background: white;
-            padding: 1.5rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s;
-            cursor: pointer;
-        }
-
+        .recipe-card-front,
         .recipe-card-back {
             position: absolute;
             width: 100%;
             height: 100%;
             backface-visibility: hidden;
             border-radius: 15px;
-            overflow: hidden;
             background: white;
-            padding: 1.5rem;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            border-radius: 15px;
-            transition: all 0.3s;
-            cursor: pointer;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
+            overflow-y: auto;
         }
-
-        .recipe-card-front:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-        }
-
         .recipe-card-back {
             transform: rotateY(180deg);
         }
+
+        .recipe-card-back p {
+            font-size: 0.9rem;
+            color: #444;
+            margin-bottom: 0.5rem;
+        }
+        
+
+
+        h2.section-title {
+            text-align: center;
+            color: white;
+            font-size: 2rem;
+            margin: 2rem 0 0;
+        }
+
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -532,46 +531,48 @@
 
         <!-- Recipes Section -->
         <section id="recipes" class="container">
-            <h2 style="text-align: center; color: white; margin-bottom: 2rem; font-size: 2rem;">
-                <i class="fas fa-fire"></i> Resep Populer
-            </h2>
+            <h2 class="section-title">
+            <i class="fas fa-fire"></i> Resep Populer
+        </h2>
 
-            <div class="recipes-grid" id="recipesGrid">
-                <!-- Recipe Card 1 -->
-                @foreach ($resep as $item)
-                    <div class="recipe-card-wrapper">
-                        <div class="recipe-card-inner">
-                            <!-- Sisi Depan -->
-                            <div class="recipe-card-front">
-                                <div class="recipe-image">
-                                    <div class="recipe-difficulty"> {{ $item->kategori->nama_kategori }}</div>
-                                    <div
-                                        style="width: 100%; height: 100%; background: linear-gradient(45deg, #f093fb, #f5576c); display: flex; align-items: center; justify-content: center; font-size: 3rem;">
-                                        🍟</div>
-                                </div>
-                                <h3 class="recipe-title">{{ $item->judul_resep }}</h3>
-                                <div class="recipe-meta">
-                                    <h3 style="color: #666; font-size: 0.9rem;"><i
-                                            class="fas fa-clock"></i>{{ $item->kategori->durasi }}</h3>
+           <div class="recipes-grid">
+            @foreach ($resep as $item)
+                <div class="recipe-card-wrapper">
+                    <div class="recipe-card-inner">
+                        <!-- Sisi Depan -->
+                        <div class="recipe-card-front">
+                            <div class="recipe-image">
+                                <div class="recipe-difficulty">
+                                    {{ $item->kategori->nama_kategori }}
                                 </div>
                                 @if ($item->gambar)
-                                    <img src="{{ asset('storage/' . $item->gambar) }}" alt="Gambar Resep"
-                                        style="width: 100%; height: 120px; object-fit: cover; border-radius: 8px;">
+                                    <img src="{{ asset('storage/' . $item->gambar) }}" alt="Gambar Resep">
+                                @else
+                                    <div
+                                        style="width: 100%; height: 100%; background: linear-gradient(45deg, #f093fb, #f5576c); display: flex; align-items: center; justify-content: center; font-size: 3rem;">
+                                        🍽️
+                                    </div>
                                 @endif
-                                <p style="font-size: 0.9rem; color: #666;">Klik untuk melihat detail resep</p>
                             </div>
-
-                            <!-- Sisi Belakang -->
-                            <div class="recipe-card-back">
-                                <strong>Bahan:</strong>
-                                <p>{!! nl2br(e($item->bahan_resep)) !!}</p>
-
-                                <strong>Langkah:</strong>
-                                <p>{!! nl2br(e($item->langkah_resep)) !!}</p>
+                            <h3 class="recipe-title">{{ $item->judul_resep }}</h3>
+                            <div class="recipe-meta">
+                                <i class="fas fa-clock"></i> {{ $item->kategori->durasi }}
                             </div>
+                            <p style="font-size: 0.9rem; color: #666;">Klik untuk melihat detail resep</p>
+                        </div>
+
+                        <!-- Sisi Belakang -->
+                        <div class="recipe-card-back">
+                            <strong>Bahan:</strong>
+                            <p>{!! nl2br(e($item->bahan_resep)) !!}</p>
+
+                            <strong>Langkah:</strong>
+                            <p>{!! nl2br(e($item->langkah_resep)) !!}</p>
                         </div>
                     </div>
-                @endforeach
+                </div>
+            @endforeach
+        </div>
 
                 <!-- Recipe Card 2 -->
                 {{-- <div class="recipe-card" data-category="mie" onclick="openModal('mie-ayam')">
@@ -600,7 +601,7 @@
                 </div> --}}
 
                 <!-- Recipe Card 3 -->
-                <div class="recipe-card" data-category="gorengan" onclick="openModal('tempe-goreng')">
+                {{-- <div class="recipe-card" data-category="gorengan" onclick="openModal('tempe-goreng')">
                     <div class="recipe-image">
                         <div class="recipe-difficulty">Mudah</div>
                         <div
@@ -696,51 +697,12 @@
                             <div class="author-avatar">F</div>
                             <span>Fadli Rahman</span>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </section>
     </main>
 
-    {{-- <!-- Recipe Detail Modal -->
-    <div class="modal" id="recipeModal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">×</button>
-            <div class="modal-image" id="modalImage"></div>
-            <div class="modal-body">
-                <h2 id="modalTitle">Nasi Goreng Sederhana</h2>
-                <div class="recipe-meta">
-                    <span><i class="fas fa-clock"></i> <span id="modalTime">15 menit</span></span>
-                    <span><i class="fas fa-users"></i> <span id="modalServing">2 porsi</span></span>
-                    <div class="recipe-rating">
-                        <span class="stars" id="modalRating">★★★★★</span>
-                        <span id="modalRatingText">(4.5)</span>
-                    </div>
-                </div>
-
-                <div class="ingredients-list">
-                    <h3><i class="fas fa-list"></i> Bahan-bahan</h3>
-                    <ul id="modalIngredients">
-                        <li>2 piring nasi putih</li>
-                        <li>2 butir telur</li>
-                        <li>3 siung bawang putih</li>
-                        <li>2 sdm kecap manis</li>
-                        <li>1 sdt garam</li>
-                        <li>Minyak goreng secukupnya</li>
-                    </ul>
-                </div>
-
-                <div class="instructions-list">
-                    <h3><i class="fas fa-clipboard-list"></i> Cara Membuat</h3>
-                    <ol id="modalInstructions">
-                        <li>Panaskan minyak di wajan, tumis bawang putih hingga harum</li>
-                        <li>Masukkan telur, orak-arik hingga matang</li>
-                        <li>Tambahkan nasi putih, aduk rata</li>
-                        <li>Beri kecap manis dan garam, aduk hingga merata</li>
-                        <li>Masak hingga nasi panas dan bumbu meresap</li>
-                        <li>Nasi goreng siap disajikan</li>
-                    </ol>
-                </div> --}}
 
     <div class="rating-section">
         <h3><i class="fas fa-star"></i> Beri Rating</h3>
