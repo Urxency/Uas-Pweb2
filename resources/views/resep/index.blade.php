@@ -38,8 +38,8 @@
                                     <td><strong>{{ $data->langkah_resep }}</strong></td>
                                     <td><strong>
                                             @if ($data->gambar)
-                                                <img src="{{ asset('storage/' . $data->gambar) }}"
-                                                    alt="{{ $data->judul_resep }}" class="img-thumbnail" width="80">
+                                                <img src="{{ asset('storage/gambar/' . $data->gambar) }}"
+                                                    alt="{{ $data->gambar }}" class="img-thumbnail" width="80">
                                             @else
                                                 <span class="text-muted">Tidak ada</span>
                                             @endif

@@ -17,7 +17,7 @@ return new class extends Migration {
     $table->string('judul_resep');
     $table->text('bahan_resep');
     $table->text('langkah_resep');
-    $table->string('gambar')->nullable();
+    // $table->string('gambar')->nullable();
     $table->timestamps();
 });
     }
