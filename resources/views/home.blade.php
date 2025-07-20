@@ -554,7 +554,7 @@
                                         {{ $item->kategori->nama_kategori }}
                                     </div>
                                     @if ($item->gambar)
-                                        <img src="{{ asset('storage/' . $item->gambar) }}" alt="Gambar Resep">
+                                        <img src="{{ asset('storage/gambar/' . $item->gambar) }}" alt="Gambar Resep">
                                     @else
                                         <div
                                             style="width: 100%; height: 100%; background: linear-gradient(45deg, #f093fb, #f5576c); display: flex; align-items: center; justify-content: center; font-size: 3rem;">

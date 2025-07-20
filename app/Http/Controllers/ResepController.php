@@ -7,6 +7,7 @@ use App\Models\Kategori;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ResepController extends Controller
 {
@@ -29,25 +30,29 @@ class ResepController extends Controller
     // Simpan data resep baru
     public function store(Request $request)
     {
+        // dd($request->file('gambar'), $request->hasFile('gambar'));
         $request->validate([
             'judul_resep'    => 'required|string|max:255',
             'kategori_id'  => 'required|exists:kategoris,id',
             'bahan_resep'    => 'required|string',
             'langkah_resep'  => 'required|string',
-            'gambar'         => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'gambar'         => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
-        $gambarPath = null;
-        if ($request->hasFile('gambar')) {
-            $gambarPath = $request->file('gambar')->store('gambar', 'public');
-        }
+        $gambar = $request->file('gambar');
+        $filename = Str::uuid() . '.' . $gambar->getClientOriginalExtension();
+
+        Storage::disk('public')->putFileAs('gambar', $gambar, $filename);
+
+        $newRequest = $request->all();
+        $newRequest ['gambar'] = $filename;
 
         Resep::create([
             'judul_resep'   => $request->judul_resep,
             'kategori_id'   => $request->kategori_id,
             'bahan_resep'   => $request->bahan_resep,
             'langkah_resep' => $request->langkah_resep,
-            'gambar'        => $gambarPath,
+            'gambar'        => $filename,
             'user_id'       => Auth::id(), // Jika pakai auth
         ]);
 
@@ -71,7 +76,7 @@ class ResepController extends Controller
             'kategori_id'    => 'required|exists:kategoris,id',
             'bahan_resep'    => 'required|string',
             'langkah_resep'  => 'required|string',
-            'gambar'         => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'gambar'         => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $resep = Resep::findOrFail($id);

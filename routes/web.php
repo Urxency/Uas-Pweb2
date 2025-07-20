@@ -65,15 +65,4 @@ Route::middleware(['auth'])->group(function () {
 Route::get('/resep/create', [ResepController::class, 'create'])->name('resep.create');
 
 
-//
-// ==============================
-// ROUTE TAMPILAN
-// ==============================
-//
 
-// duplikat — dibiarkan sesuai permintaan
-route::resource('/tampilan', RatingController::class);
-
-Route::get('/tampilan', function () {
-    return view('tampilan.index');
-});
