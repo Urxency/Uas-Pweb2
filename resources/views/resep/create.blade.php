@@ -37,24 +37,21 @@
                     </div>
                     <div class="form-group my-2">
                         <label for="durasi">Durasi</label>
-                        <select class="form-select @error('durasi') is-invalid @enderror" name="durasi"
-                            id="durasi">
-                            <option selected disabled>Pilih kategori</option>
-                            @foreach ($kategori as $item)
-                                <option value="{{ $item->durasi }}" {{ old('durasi') == $item->id ? 'selected' : '' }}>
-                                    {{ $item->durasi }}
-                                </option>
-                            @endforeach
+                        <select class="form-select @error('durasi') is-invalid @enderror" name="durasi" id="durasi">
+                            <option selected disabled>Pilih durasi</option>
+                            <option value="15 menit" {{ old('durasi') == '15 menit' ? 'selected' : '' }}>15 menit</option>
+                            <option value="30 menit" {{ old('durasi') == '30 menit' ? 'selected' : '' }}>30 menit</option>
+                            <option value="1 jam" {{ old('durasi') == '1 jam' ? 'selected' : '' }}>1 jam</option>
+                            <option value=">1 jam" {{ old('durasi') == '>1 jam' ? 'selected' : '' }}>Lebih dari 1 jam</option>
                         </select>
                         @error('durasi')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
                     </div>
-
                     <div class="form-group my-2">
                         <label for="bahan_resep">Bahan</label>
-                        <input type="text" class="form-control @error('bahan_resep') is-invalid @enderror"
-                            name="bahan_resep" id="bahan_resep" value="{{ old('bahan_resep') }}">
+                        <textarea class="form-control @error('bahan_resep') is-invalid @enderror"
+                            name="bahan_resep" id="bahan_resep" value="{{ old('bahan_resep') }}"></textarea>
                         @error('bahan_resep')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror
@@ -62,8 +59,8 @@
 
                     <div class="form-group my-2">
                         <label for="langkah_resep">Langkah</label>
-                        <input type="text" class="form-control @error('langkah_resep') is-invalid @enderror"
-                            name="langkah_resep" id="langkah_resep" value="{{ old('langkah_resep') }}">
+                        <textarea class="form-control @error('langkah_resep') is-invalid @enderror"
+                            name="langkah_resep" id="langkah_resep" value="{{ old('langkah_resep') }}"></textarea>
                         @error('langkah_resep')
                             <small class="text-danger">{{ $message }}</small>
                         @enderror

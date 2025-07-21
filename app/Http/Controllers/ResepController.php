@@ -12,27 +12,28 @@ use Illuminate\Support\Str;
 class ResepController extends Controller
 {
     // Tampilkan semua resep
-    public function index()
+    public function index(Request $request)
     {
-        
         $reseps = Resep::latest()->paginate(10);
         return view('resep.index', compact('reseps'));
+
         
     }
 
     // Form tambah resep
-    public function create(){
-
-    $kategori = Kategori::all(); // Ambil semua kategori
-    return view('resep.create', compact('kategori'));
+    public function create()
+    {
+        $kategori = Kategori::all();
+        return view('resep.create', compact('kategori'));
     }
+
     // Simpan data resep baru
     public function store(Request $request)
     {
-        // dd($request->file('gambar'), $request->hasFile('gambar'));
         $request->validate([
             'judul_resep'    => 'required|string|max:255',
-            'kategori_id'  => 'required|exists:kategoris,id',
+            'kategori_id'    => 'required|exists:kategoris,id',
+            'durasi'         => 'required|string|max:100',
             'bahan_resep'    => 'required|string',
             'langkah_resep'  => 'required|string',
             'gambar'         => 'required|image|mimes:jpg,jpeg,png|max:2048',
@@ -40,19 +41,16 @@ class ResepController extends Controller
 
         $gambar = $request->file('gambar');
         $filename = Str::uuid() . '.' . $gambar->getClientOriginalExtension();
-
-        Storage::disk('public')->putFileAs('gambar', $gambar, $filename);
-
-        $newRequest = $request->all();
-        $newRequest ['gambar'] = $filename;
+        $gambar->storeAs('gambar', $filename, 'public');
 
         Resep::create([
             'judul_resep'   => $request->judul_resep,
             'kategori_id'   => $request->kategori_id,
+            'durasi'        => $request->durasi,
             'bahan_resep'   => $request->bahan_resep,
             'langkah_resep' => $request->langkah_resep,
             'gambar'        => $filename,
-            'user_id'       => Auth::id(), // Jika pakai auth
+            'user_id'       => Auth::id(),
         ]);
 
         return redirect()->route('resep.index')->with('success', 'Resep berhasil ditambahkan.');
@@ -73,51 +71,69 @@ class ResepController extends Controller
         $request->validate([
             'judul_resep'    => 'required|string|max:255',
             'kategori_id'    => 'required|exists:kategoris,id',
+            'durasi'         => 'required|string|max:100',
             'bahan_resep'    => 'required|string',
             'langkah_resep'  => 'required|string',
-            'gambar'         => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'gambar'         => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $resep = Resep::findOrFail($id);
 
+        // Update gambar jika ada file baru
         if ($request->hasFile('gambar')) {
-            // Hapus gambar lama jika ada
-            if ($resep->gambar && Storage::disk('public')->exists($resep->gambar)) {
-                Storage::disk('public')->delete($resep->gambar);
+            if ($resep->gambar && Storage::disk('public')->exists('gambar/' . $resep->gambar)) {
+                Storage::disk('public')->delete('gambar/' . $resep->gambar);
             }
 
-            $resep->gambar = $request->file('gambar')->store('gambar', 'public');
+            $gambar = $request->file('gambar');
+            $filename = Str::uuid() . '.' . $gambar->getClientOriginalExtension();
+            $gambar->storeAs('gambar', $filename, 'public');
+            $resep->gambar = $filename;
         }
 
         $resep->update([
             'judul_resep'   => $request->judul_resep,
             'kategori_id'   => $request->kategori_id,
+            'durasi'        => $request->durasi,
             'bahan_resep'   => $request->bahan_resep,
             'langkah_resep' => $request->langkah_resep,
+            'gambar'        => $resep->gambar, // tetap simpan gambar jika tidak diganti
         ]);
 
         return redirect()->route('resep.index')->with('success', 'Resep berhasil diperbarui.');
     }
 
     // Tampilkan detail satu resep
-public function show($id)
-{
-    $resep = Resep::with('kategori', 'user')->findOrFail($id);
-
-    return view('resep.show', compact('resep'));
-}
+    public function show($id)
+    {
+        $resep = Resep::with('kategori', 'user')->findOrFail($id);
+        return view('resep.show', compact('resep'));
+    }
 
     // Hapus resep
     public function destroy($id)
     {
         $resep = Resep::findOrFail($id);
 
-        if ($resep->gambar && Storage::disk('public')->exists($resep->gambar)) {
-            Storage::disk('public')->delete($resep->gambar);
+        if ($resep->gambar && Storage::disk('public')->exists('gambar/' . $resep->gambar)) {
+            Storage::disk('public')->delete('gambar/' . $resep->gambar);
         }
 
         $resep->delete();
 
         return redirect()->route('resep.index')->with('success', 'Resep berhasil dihapus.');
     }
+
+    public function search(Request $request)
+{
+    $keyword = $request->q;
+
+    $reseps = Resep::where('judul_resep', 'like', "%$keyword%")
+        ->orWhere('bahan_resep', 'like', "%$keyword%")
+        ->orWhere('langkah_resep', 'like', "%$keyword%")
+        ->latest()
+        ->paginate(10);
+
+    return view('resep.hasil', compact('reseps', 'keyword'));
+}
 }

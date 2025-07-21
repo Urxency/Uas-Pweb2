@@ -4,27 +4,18 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-use function Laravel\Prompts\table;
-
-return new class extends Migration
-{
-    /**
-     * Run the migrations.
-     */
+return new class extends Migration {
     public function up(): void
     {
         Schema::table('reseps', function (Blueprint $table) {
-            ///$table->string('gambar')->after('langkah_resep');
+            $table->string('durasi')->nullable()->after('kategori_id');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::table('reseps', function (Blueprint $table) {
-            $table->dropColumn( 'gambar');
+            $table->dropColumn('durasi');
         });
     }
 };

@@ -1,33 +1,39 @@
 <?php
- 
+
 namespace App\Http\Controllers;
 
- 
 use Illuminate\Http\Request;
 use App\Models\Resep;
+
 class HomeController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except(['index', 'search']);
     }
- 
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
+
+    // Halaman utama (home)
     public function index()
     {
-        $resep = Resep::latest()->take(6)->get(); // ambil 6 resep terbaru, bisa disesuaikan
-    return view('home', compact('resep'));
+        $resep = Resep::latest()->take(6)->get(); // Ambil 6 resep terbaru
+        return view('home', compact('resep'));
     }
-    public function produk() {
+
+    // Halaman hasil pencarian
+    public function search(Request $request)
+    {
+        $keyword = $request->input('keyword');
+
+        $resep = Resep::where('judul_resep', 'like', "%$keyword%")
+                    ->orWhere('bahan_resep', 'like', "%$keyword%")
+                    ->orWhere('langkah_resep', 'like', "%$keyword%")
+                    ->get();
+
+        return view('home', compact('resep', 'keyword'));
+    }
+
+    public function produk()
+    {
         return "ini contoh untuk halaman produk";
     }
 }

@@ -457,8 +457,8 @@
             </a>
             <ul class="nav-menu">
                 <li><a href="#" class="nav-link">Beranda</a></li>
-                <li><a href="{{ route ('resep.index') }}" class="nav-link">Resep</a></li>
-                <li><a href="{{ route ('rating.create') }}" class="nav-link">Rating</a></li>
+                <li><a href="#" class="nav-link">Resep</a></li>
+                <li><a href="#" class="nav-link">Kategori</a></li>
                 <li><a href="#" class="nav-link">Favorit</a></li>
                 @guest
                     @if (Route::has('login'))
@@ -512,16 +512,11 @@
         <!-- Search & Filter Section -->
         <section class="search-section">
             <div class="container">
-                
-                    {{-- <input type="text" class="search-input" placeholder="Cari resep masakan..." id="searchInput"> --}}
-                    <form action="{{ route('resep.index') }}" method="GET"
-                        class="search-container">
-                        <input type="text" class="search-input" name="search" placeholder="Cari resep..." value="{{ request('search') }}">
-                        <button type="submit"
-                            class="btn btn-primary"><i class="fas fa-search"></i>
-                            Cari
-                        </button>
-                    </form>
+                <form action="{{ route('search') }}" method="GET" class="d-flex mb-4">
+                    <input type="text" name="keyword" class="form-control me-2" placeholder="Cari resep..." value="{{ request('keyword') }}">
+                    <button type="submit" class="btn btn-primary">Cari</button>
+                </form>
+
                     
                 </div>
 
@@ -554,17 +549,17 @@
                                         {{ $item->kategori->nama_kategori }}
                                     </div>
                                     @if ($item->gambar)
-                                        <img src="{{ asset('storage/gambar/' . $item->gambar) }}" alt="Gambar Resep">
+                                        <img src="{{ asset('storage/' . $item->gambar) }}" alt="Gambar Resep">
                                     @else
                                         <div
                                             style="width: 100%; height: 100%; background: linear-gradient(45deg, #f093fb, #f5576c); display: flex; align-items: center; justify-content: center; font-size: 3rem;">
-                                            🍽️
+                                            🍽
                                         </div>
                                     @endif
                                 </div>
                                 <h3 class="recipe-title">{{ $item->judul_resep }}</h3>
                                 <div class="recipe-meta">
-                                    <i class="fas fa-clock"></i> {{ $item->kategori->durasi }}
+                                    <i class="fas fa-clock"></i> {{ $item->durasi }}
                                 </div>
                                 <p style="font-size: 0.9rem; color: #666;">Klik untuk melihat detail resep</p>
                             </div>
@@ -742,4 +737,3 @@
             });
         });
     </script>
->>>>>>> 9e0262df75b39ec1e8a1601fa64fff1f3ba316bf
