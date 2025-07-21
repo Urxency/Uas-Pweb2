@@ -33,6 +33,7 @@ class ResepController extends Controller
         $request->validate([
             'judul_resep'    => 'required|string|max:255',
             'kategori_id'    => 'required|exists:kategoris,id',
+            'level'         => 'required|string|max:100',
             'durasi'         => 'required|string|max:100',
             'bahan_resep'    => 'required|string',
             'langkah_resep'  => 'required|string',
@@ -46,6 +47,7 @@ class ResepController extends Controller
         Resep::create([
             'judul_resep'   => $request->judul_resep,
             'kategori_id'   => $request->kategori_id,
+            'level'        => $request->level,
             'durasi'        => $request->durasi,
             'bahan_resep'   => $request->bahan_resep,
             'langkah_resep' => $request->langkah_resep,
@@ -68,11 +70,13 @@ class ResepController extends Controller
     // Update resep
     public function update(Request $request, $id)
     {
+        
         $request->validate([
             'judul_resep'    => 'required|string|max:255',
             'kategori_id'    => 'required|exists:kategoris,id',
-            'durasi'         => 'required|string|max:100',
+            'level'         => 'required|string|max:100',
             'bahan_resep'    => 'required|string',
+            'durasi'         => 'required|string|max:100',
             'langkah_resep'  => 'required|string',
             'gambar'         => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
@@ -94,8 +98,9 @@ class ResepController extends Controller
         $resep->update([
             'judul_resep'   => $request->judul_resep,
             'kategori_id'   => $request->kategori_id,
-            'durasi'        => $request->durasi,
+            'level'        => $request->level,
             'bahan_resep'   => $request->bahan_resep,
+            'durasi'        => $request->durasi,
             'langkah_resep' => $request->langkah_resep,
             'gambar'        => $resep->gambar, // tetap simpan gambar jika tidak diganti
         ]);

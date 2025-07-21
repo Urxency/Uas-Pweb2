@@ -10,7 +10,7 @@
                 <div class="col-md-4 mb-4">
                     <div class="card h-100">
                         @if ($resep->gambar)
-                            <img src="{{ asset('storage/' . $resep->gambar) }}" class="card-img-top" alt="{{ $resep->judul_resep }}">
+                            <img src="{{ asset('storage/gambar' . $resep->gambar) }}" class="card-img-top" alt="{{ $resep->judul_resep }}">
                         @endif
                         <div class="card-body">
                             <h5 class="card-title">{{ $resep->judul_resep }}</h5>

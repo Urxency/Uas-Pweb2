@@ -7,7 +7,6 @@
                 <a href="{{ route('resep.index') }}" class="btn btn-warning">Kembali</a>
             </div>
             <div class="card-body">
-                {{-- ✅ Tambahkan enctype --}}
                 <form action="{{ route('resep.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
@@ -36,13 +35,25 @@
                         @enderror
                     </div>
                     <div class="form-group my-2">
+                        <label for="level">Level</label>
+                        <select class="form-select @error('level') is-invalid @enderror" name="level" id="level">
+                            <option selected disabled>Pilih level</option>
+                            <option value="Mudah" {{ old('level') == 'Mudah' ? 'selected' : '' }}>Mudah</option>
+                            <option value="Sedang" {{ old('level') == 'Sedang' ? 'selected' : '' }}>Sedang</option>
+                            <option value="Sulit" {{ old('level') == 'Sulit' ? 'selected' : '' }}>Sulit</option>
+                        </select>
+                        @error('level')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                    <div class="form-group my-2">
                         <label for="durasi">Durasi</label>
                         <select class="form-select @error('durasi') is-invalid @enderror" name="durasi" id="durasi">
                             <option selected disabled>Pilih durasi</option>
                             <option value="15 menit" {{ old('durasi') == '15 menit' ? 'selected' : '' }}>15 menit</option>
                             <option value="30 menit" {{ old('durasi') == '30 menit' ? 'selected' : '' }}>30 menit</option>
                             <option value="1 jam" {{ old('durasi') == '1 jam' ? 'selected' : '' }}>1 jam</option>
-                            <option value=">1 jam" {{ old('durasi') == '>1 jam' ? 'selected' : '' }}>Lebih dari 1 jam</option>
+                            <option value="lebih dari 1 jam" {{ old('durasi') == 'lebih dari 1 jam' ? 'selected' : '' }}>Lebih dari 1 jam</option>
                         </select>
                         @error('durasi')
                             <small class="text-danger">{{ $message }}</small>

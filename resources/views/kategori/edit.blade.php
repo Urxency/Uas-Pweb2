@@ -1,3 +1,5 @@
+@extends('layouts.app')
+
 @section('content')
     <div class="container">
 
@@ -20,7 +22,7 @@
                         @enderror
                     </div>
 
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Update</button>
                 </form>
 
             </div>

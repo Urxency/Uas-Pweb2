@@ -37,7 +37,34 @@
                         @enderror
                     </div>
 
-                   {{-- Bahan --}}
+                    <div class="form-group my-2">
+                        <label for="level">Level</label>
+                        <select class="form-select @error('level') is-invalid @enderror" name="level" id="level">
+                            <option selected disabled>Pilih Level</option>
+                            <option value="Mudah" {{ old('level') == 'Mudah' ? 'selected' : '' }}>Mudah</option>
+                            <option value="Sedang" {{ old('level') == 'Sedang' ? 'selected' : '' }}>Sedang</option>
+                            <option value="Sulit" {{ old('level') == 'Sulit' ? 'selected' : '' }}>Sulit</option>
+                        </select>
+                        @error('level')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    <div class="form-group my-2">
+                        <label for="durasi">Durasi</label>
+                        <select class="form-select @error('durasi') is-invalid @enderror" name="durasi" id="durasi">
+                            <option selected disabled>Pilih durasi</option>
+                            <option value="15 menit" {{ old('durasi') == '15 menit' ? 'selected' : '' }}>15 menit</option>
+                            <option value="30 menit" {{ old('durasi') == '30 menit' ? 'selected' : '' }}>30 menit</option>
+                            <option value="1 jam" {{ old('durasi') == '1 jam' ? 'selected' : '' }}>1 jam</option>
+                            <option value=">1 jam" {{ old('durasi') == '>1 jam' ? 'selected' : '' }}>Lebih dari 1 jam</option>
+                        </select>
+                        @error('durasi')
+                            <small class="text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+
+                    {{-- Bahan --}}
                     <div class="form-group my-2">
                         <label for="bahan_resep">Bahan</label>
                         <textarea class="form-control @error('bahan_resep') is-invalid @enderror"
@@ -68,23 +95,9 @@
 
                         @if ($resep->gambar)
                             <div class="mt-2">
-                                <img src="{{ asset('storage/' . $resep->gambar) }}" alt="Gambar Resep" width="150">
+                                <img src="{{ asset('storage/gambar/' . $resep->gambar) }}" alt="Gambar Resep" width="150">
                             </div>
                         @endif
-                    </div>
-
-                   <div class="form-group my-2">
-                        <label for="durasi">Durasi</label>
-                        <select class="form-select @error('durasi') is-invalid @enderror" name="durasi" id="durasi">
-                            <option selected disabled>Pilih durasi</option>
-                            <option value="15 menit" {{ old('durasi') == '15 menit' ? 'selected' : '' }}>15 menit</option>
-                            <option value="30 menit" {{ old('durasi') == '30 menit' ? 'selected' : '' }}>30 menit</option>
-                            <option value="1 jam" {{ old('durasi') == '1 jam' ? 'selected' : '' }}>1 jam</option>
-                            <option value=">1 jam" {{ old('durasi') == '>1 jam' ? 'selected' : '' }}>Lebih dari 1 jam</option>
-                        </select>
-                        @error('durasi')
-                            <small class="text-danger">{{ $message }}</small>
-                        @enderror
                     </div>
 
 

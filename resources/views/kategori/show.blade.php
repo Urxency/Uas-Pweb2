@@ -1,3 +1,5 @@
+@extends('layouts.app')
+
 @section('content')
 <div class="container mt-3">
     <div class="card">
@@ -5,7 +7,7 @@
             <h3>Kategori</h3>
         </div>
         <div class="card-body">
-            <p><strong>Nama Resep :</strong> {{ $kategori->nama_kategori }}</p>
+            <p><strong>Nama Kategori :</strong> {{ $kategori->nama_kategori }}</p>
             <a href="{{ route('kategori.index') }}" class="btn btn-warning">Kembali</a>
         </div>
     </div>

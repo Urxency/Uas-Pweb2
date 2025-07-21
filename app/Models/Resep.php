@@ -11,7 +11,7 @@ class Resep extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['judul_resep', 'kategori_id', 'bahan_resep','durasi', 'langkah_resep', 'gambar', 'user_id'];
+    protected $fillable = ['judul_resep', 'kategori_id', 'bahan_resep', 'durasi','level', 'langkah_resep', 'gambar', 'user_id'];
 
     // Relasi ke User
     public function user()

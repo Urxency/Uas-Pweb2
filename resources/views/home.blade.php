@@ -350,6 +350,16 @@
             overflow: hidden;
         }
 
+        .recipe-card-wrapper.need-login {
+            cursor: not-allowed;
+            opacity: 0.9;
+        }
+
+        .recipe-card-wrapper.clickable {
+            cursor: pointer;
+        }
+
+
         .recipe-card-inner {
             position: relative;
             width: 100%;
@@ -457,7 +467,7 @@
             </a>
             <ul class="nav-menu">
                 <li><a href="#" class="nav-link">Beranda</a></li>
-                <li><a href="#" class="nav-link">Resep</a></li>
+                <li><a href="#recipes" class="nav-link">Resep</a></li>
                 <li><a href="#" class="nav-link">Kategori</a></li>
                 <li><a href="#" class="nav-link">Favorit</a></li>
                 @guest
@@ -513,21 +523,22 @@
         <section class="search-section">
             <div class="container">
                 <form action="{{ route('search') }}" method="GET" class="d-flex mb-4">
-                    <input type="text" name="keyword" class="form-control me-2" placeholder="Cari resep..." value="{{ request('keyword') }}">
+                    <input type="text" name="keyword" class="form-control me-2" placeholder="Cari resep..."
+                        value="{{ request('keyword') }}">
                     <button type="submit" class="btn btn-primary">Cari</button>
                 </form>
 
-                    
-                </div>
 
-                <div class="category-filter" style="margin-top: 1rem;">
-                    <button class="category-btn active" data-category="all">Semua</button>
-                    <button class="category-btn" data-category="nasi">🍚 Nasi</button>
-                    <button class="category-btn" data-category="mie">🍜 Mie</button>
-                    <button class="category-btn" data-category="gorengan">🍟 Gorengan</button>
-                    <button class="category-btn" data-category="minuman">🥤 Minuman</button>
-                    <button class="category-btn" data-category="cemilan">🍪 Cemilan</button>
-                </div>
+            </div>
+
+            <div class="category-filter" style="margin-top: 1rem;">
+                <button class="category-btn active" data-category="all">Semua</button>
+                <button class="category-btn" data-category="nasi">🍚 Nasi</button>
+                <button class="category-btn" data-category="mie">🍜 Mie</button>
+                <button class="category-btn" data-category="gorengan">🍟 Gorengan</button>
+                <button class="category-btn" data-category="minuman">🥤 Minuman</button>
+                <button class="category-btn" data-category="cemilan">🍪 Cemilan</button>
+            </div>
             </div>
         </section>
 
@@ -539,8 +550,7 @@
 
             <div class="recipes-grid">
                 @foreach ($resep as $item)
-                
-                    <div class="recipe-card-wrapper">
+                    <div class="recipe-card-wrapper {{ Auth::check() ? 'clickable' : 'need-login' }}">
                         <div class="recipe-card-inner">
                             <!-- Sisi Depan -->
                             <div class="recipe-card-front">
@@ -549,18 +559,20 @@
                                         {{ $item->kategori->nama_kategori }}
                                     </div>
                                     @if ($item->gambar)
-                                        <img src="{{ asset('storage/' . $item->gambar) }}" alt="Gambar Resep">
+                                        <img src="{{ asset('storage/gambar/' . $item->gambar) }}" alt="Gambar Resep">
                                     @else
                                         <div
                                             style="width: 100%; height: 100%; background: linear-gradient(45deg, #f093fb, #f5576c); display: flex; align-items: center; justify-content: center; font-size: 3rem;">
-                                            🍽
+                                            🍽️
                                         </div>
                                     @endif
                                 </div>
                                 <h3 class="recipe-title">{{ $item->judul_resep }}</h3>
                                 <div class="recipe-meta">
                                     <i class="fas fa-clock"></i> {{ $item->durasi }}
+                                    {{ $item->level }}
                                 </div>
+
                                 <p style="font-size: 0.9rem; color: #666;">Klik untuk melihat detail resep</p>
                             </div>
 
@@ -576,131 +588,6 @@
                     </div>
                 @endforeach
             </div>
-
-            <!-- Recipe Card 2 -->
-            {{-- <div class="recipe-card" data-category="mie" onclick="openModal('mie-ayam')">
-                    <div class="recipe-image">
-                        <div class="recipe-difficulty">Sedang</div>
-                        <div
-                            style="width: 100%; height: 100%; background: linear-gradient(45deg, #4ecdc4, #44a08d); display: flex; align-items: center; justify-content: center; font-size: 3rem;">
-                            🍜</div>
-                    </div>
-                    <div class="recipe-content">
-                        <h3 class="recipe-title">Mie Ayam Homemade</h3>
-                        <div class="recipe-meta">
-                            <span><i class="fas fa-clock"></i> 25 menit</span>
-                            <div class="recipe-rating">
-                                <span class="stars">★★★★☆</span>
-                                <span>(4.2)</span>
-                            </div>
-                        </div>
-                        <p style="color: #666; font-size: 0.9rem;">Mie ayam lezat ala warung dengan budget mahasiswa
-                        </p>
-                        <div class="recipe-author">
-                            <div class="author-avatar">S</div>
-                            <span>Sari Indah</span>
-                        </div>
-                    </div>
-                </div> --}}
-
-            <!-- Recipe Card 3 -->
-            {{-- <div class="recipe-card" data-category="gorengan" onclick="openModal('tempe-goreng')">
-                    <div class="recipe-image">
-                        <div class="recipe-difficulty">Mudah</div>
-                        <div
-                            style="width: 100%; height: 100%; background: linear-gradient(45deg, #f093fb, #f5576c); display: flex; align-items: center; justify-content: center; font-size: 3rem;">
-                            🍟</div>
-                    </div>
-                    <div class="recipe-content">
-                        <h3 class="recipe-title">Tempe Goreng Crispy</h3>
-                        <div class="recipe-meta">
-                            <span><i class="fas fa-clock"></i> 10 menit</span>
-                            <div class="recipe-rating">
-                                <span class="stars">★★★★★</span>
-                                <span>(4.8)</span>
-                            </div>
-                        </div>
-                        <p style="color: #666; font-size: 0.9rem;">Tempe goreng renyah dengan bumbu rahasia</p>
-                        <div class="recipe-author">
-                            <div class="author-avatar">D</div>
-                            <span>Dewi Lestari</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Recipe Card 4 -->
-                <div class="recipe-card" data-category="minuman" onclick="openModal('es-teh')">
-                    <div class="recipe-image">
-                        <div class="recipe-difficulty">Mudah</div>
-                        <div
-                            style="width: 100%; height: 100%; background: linear-gradient(45deg, #a8edea, #fed6e3); display: flex; align-items: center; justify-content: center; font-size: 3rem;">
-                            🥤</div>
-                    </div>
-                    <div class="recipe-content">
-                        <h3 class="recipe-title">Es Teh Manis Segar</h3>
-                        <div class="recipe-meta">
-                            <span><i class="fas fa-clock"></i> 5 menit</span>
-                            <div class="recipe-rating">
-                                <span class="stars">★★★★☆</span>
-                                <span>(4.0)</span>
-                            </div>
-                        </div>
-                        <p style="color: #666; font-size: 0.9rem;">Minuman segar pelepas dahaga saat cuaca panas</p>
-                        <div class="recipe-author">
-                            <div class="author-avatar">R</div>
-                            <span>Rizki Pratama</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Recipe Card 5 -->
-                <div class="recipe-card" data-category="cemilan" onclick="openModal('pisang-goreng')">
-                    <div class="recipe-image">
-                        <div class="recipe-difficulty">Mudah</div>
-                        <div
-                            style="width: 100%; height: 100%; background: linear-gradient(45deg, #ffecd2, #fcb69f); display: flex; align-items: center; justify-content: center; font-size: 3rem;">
-                            🍪</div>
-                    </div>
-                    <div class="recipe-content">
-                        <h3 class="recipe-title">Pisang Goreng Keju</h3>
-                        <div class="recipe-meta">
-                            <span><i class="fas fa-clock"></i> 12 menit</span>
-                            <div class="recipe-rating">
-                                <span class="stars">★★★★★</span>
-                                <span>(4.7)</span>
-                            </div>
-                        </div>
-                        <p style="color: #666; font-size: 0.9rem;">Cemilan enak dengan topping keju yang melimpah</p>
-                        <div class="recipe-author">
-                            <div class="author-avatar">N</div>
-                            <span>Novi Rahayu</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Recipe Card 6 -->
-                <div class="recipe-card" data-category="nasi" onclick="openModal('nasi-uduk')">
-                    <div class="recipe-image">
-                        <div class="recipe-difficulty">Sedang</div>
-                        <div
-                            style="width: 100%; height: 100%; background: linear-gradient(45deg, #d299c2, #fef9d7); display: flex; align-items: center; justify-content: center; font-size: 3rem;">
-                            🍚</div>
-                    </div>
-                    <div class="recipe-content">
-                        <h3 class="recipe-title">Nasi Uduk Mini</h3>
-                        <div class="recipe-meta">
-                            <span><i class="fas fa-clock"></i> 20 menit</span>
-                            <div class="recipe-rating">
-                                <span class="stars">★★★★☆</span>
-                                <span>(4.3)</span>
-                            </div>
-                        </div>
-                        <p style="color: #666; font-size: 0.9rem;">Nasi uduk porsi kecil cocok untuk 1-2 orang</p>
-                        <div class="recipe-author">
-                            <div class="author-avatar">F</div>
-                            <span>Fadli Rahman</span>
-                        </div>
-                    </div> --}}
             </div>
             </div>
         </section>
@@ -733,7 +620,13 @@
     <script>
         document.querySelectorAll('.recipe-card-wrapper').forEach(card => {
             card.addEventListener('click', () => {
-                card.classList.toggle('flipped');
+                // card.classList.toggle('flipped');
+                if (card.classList.contains('need-login')) {
+                    alert('Silakan login terlebih dahulu untuk melihat detail resep.');
+                    window.location.href = "{{ route('login') }}";
+                } else {
+                    card.classList.toggle('flipped');
+                }
             });
         });
     </script>

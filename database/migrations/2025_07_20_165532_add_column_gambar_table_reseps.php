@@ -14,7 +14,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('reseps', function (Blueprint $table) {
-            ///$table->string('gambar')->after('langkah_resep');
+            $table->string('gambar')->after('durasi');
         });
     }
 

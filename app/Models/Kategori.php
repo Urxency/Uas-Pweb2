@@ -9,7 +9,7 @@ class Kategori extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nama_kategori', 'durasi'];
+    protected $fillable = ['nama_kategori', 'level'];
 
     public function resep()
     {

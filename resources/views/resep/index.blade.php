@@ -21,6 +21,7 @@
                                 <th>Nama Resep</th>
                                 <th>Kategori</th>
                                 <th>Durasi</th>
+                                <th>Level</th>
                                 <th>Bahan</th>
                                 <th>Langkah</th>
                                 <th>Gambar</th>
@@ -34,6 +35,7 @@
                                     <td><strong>{{ $data->judul_resep }}</strong></td>
                                     <td><strong>{{ $data->kategori?->nama_kategori ?? '-' }}</strong></td>
                                     <td><strong>{{ $data->durasi ?? '-' }}</strong></td>
+                                    <td><strong>{{ $data->level ?? '-' }}</strong></td>
                                     <td><strong>{{ $data->bahan_resep }}</strong></td>
                                     <td><strong>{{ $data->langkah_resep }}</strong></td>
                                     <td><strong>
