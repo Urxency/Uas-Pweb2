@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Resep;
 use App\Models\Kategori;
+use App\Models\Rating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -14,10 +15,10 @@ class ResepController extends Controller
     // Tampilkan semua resep
     public function index(Request $request)
     {
-        $reseps = Resep::latest()->paginate(10);
+        $reseps = Resep::with(['ratings', 'kategori'])
+            ->latest()
+            ->paginate(10);
         return view('resep.index', compact('reseps'));
-
-        
     }
 
     // Form tambah resep
@@ -31,13 +32,13 @@ class ResepController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'judul_resep'    => 'required|string|max:255',
-            'kategori_id'    => 'required|exists:kategoris,id',
-            'level'         => 'required|string|max:100',
-            'durasi'         => 'required|string|max:100',
-            'bahan_resep'    => 'required|string',
-            'langkah_resep'  => 'required|string',
-            'gambar'         => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'judul_resep' => 'required|string|max:255',
+            'kategori_id' => 'required|exists:kategoris,id',
+            'level' => 'required|string|max:100',
+            'durasi' => 'required|string|max:100',
+            'bahan_resep' => 'required|string',
+            'langkah_resep' => 'required|string',
+            'gambar' => 'required|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $gambar = $request->file('gambar');
@@ -45,14 +46,14 @@ class ResepController extends Controller
         $gambar->storeAs('gambar', $filename, 'public');
 
         Resep::create([
-            'judul_resep'   => $request->judul_resep,
-            'kategori_id'   => $request->kategori_id,
-            'level'        => $request->level,
-            'durasi'        => $request->durasi,
-            'bahan_resep'   => $request->bahan_resep,
+            'judul_resep' => $request->judul_resep,
+            'kategori_id' => $request->kategori_id,
+            'level' => $request->level,
+            'durasi' => $request->durasi,
+            'bahan_resep' => $request->bahan_resep,
             'langkah_resep' => $request->langkah_resep,
-            'gambar'        => $filename,
-            'user_id'       => Auth::id(),
+            'gambar' => $filename,
+            'user_id' => Auth::id(),
         ]);
 
         return redirect()->route('resep.index')->with('success', 'Resep berhasil ditambahkan.');
@@ -70,15 +71,14 @@ class ResepController extends Controller
     // Update resep
     public function update(Request $request, $id)
     {
-        
         $request->validate([
-            'judul_resep'    => 'required|string|max:255',
-            'kategori_id'    => 'required|exists:kategoris,id',
-            'level'         => 'required|string|max:100',
-            'bahan_resep'    => 'required|string',
-            'durasi'         => 'required|string|max:100',
-            'langkah_resep'  => 'required|string',
-            'gambar'         => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'judul_resep' => 'required|string|max:255',
+            'kategori_id' => 'required|exists:kategoris,id',
+            'level' => 'required|string|max:100',
+            'bahan_resep' => 'required|string',
+            'durasi' => 'required|string|max:100',
+            'langkah_resep' => 'required|string',
+            'gambar' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $resep = Resep::findOrFail($id);
@@ -96,13 +96,13 @@ class ResepController extends Controller
         }
 
         $resep->update([
-            'judul_resep'   => $request->judul_resep,
-            'kategori_id'   => $request->kategori_id,
-            'level'        => $request->level,
-            'bahan_resep'   => $request->bahan_resep,
-            'durasi'        => $request->durasi,
+            'judul_resep' => $request->judul_resep,
+            'kategori_id' => $request->kategori_id,
+            'level' => $request->level,
+            'bahan_resep' => $request->bahan_resep,
+            'durasi' => $request->durasi,
             'langkah_resep' => $request->langkah_resep,
-            'gambar'        => $resep->gambar, // tetap simpan gambar jika tidak diganti
+            'gambar' => $resep->gambar, // tetap simpan gambar jika tidak diganti
         ]);
 
         return redirect()->route('resep.index')->with('success', 'Resep berhasil diperbarui.');
@@ -111,7 +111,7 @@ class ResepController extends Controller
     // Tampilkan detail satu resep
     public function show($id)
     {
-        $resep = Resep::with('kategori', 'user')->findOrFail($id);
+        $resep = Resep::with('ratings', 'kategori', 'user')->findOrFail($id);
         return view('resep.show', compact('resep'));
     }
 
@@ -130,15 +130,29 @@ class ResepController extends Controller
     }
 
     public function search(Request $request)
-{
-    $keyword = $request->q;
+    {
+        $keyword = $request->q;
 
-    $reseps = Resep::where('judul_resep', 'like', "%$keyword%")
-        ->orWhere('bahan_resep', 'like', "%$keyword%")
-        ->orWhere('langkah_resep', 'like', "%$keyword%")
-        ->latest()
-        ->paginate(10);
+        $reseps = Resep::where('judul_resep', 'like', "%$keyword%")
+            ->orWhere('bahan_resep', 'like', "%$keyword%")
+            ->orWhere('langkah_resep', 'like', "%$keyword%")
+            ->latest()
+            ->paginate(10);
 
-    return view('resep.hasil', compact('reseps', 'keyword'));
-}
+        return view('resep.hasil', compact('reseps', 'keyword'));
+    }
+
+    public function rate(Request $request, $id)
+    {
+        $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+        ]);
+
+        $user = Auth::user();
+        $resep = Resep::findOrFail($id);
+
+        Rating::updateOrCreate(['user_id' => $user->id, 'resep_id' => $resep->id], ['rating' => $request->rating]);
+
+        return redirect()->back()->with('success', 'Rating berhasil disimpan.');
+    }
 }

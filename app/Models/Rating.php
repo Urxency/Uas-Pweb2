@@ -13,7 +13,7 @@ class Rating extends Model
     protected $fillable = [
         'user_id',
         'resep_id',
-        'nilai_rating',
+        'rating',
     ];
 
     // Relasi ke User

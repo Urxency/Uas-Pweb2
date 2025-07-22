@@ -1,5 +1,4 @@
-<?php
-
+<?php 
 namespace App\Http\Controllers;
 
 use App\Models\Rating;
@@ -9,30 +8,27 @@ use Illuminate\Support\Facades\Auth;
 
 class RatingController extends Controller
 {
-
     public function index()
     {
-        return view('Tampilan.index');
+        return view('resep.index');
     }
-    
-    public function store(Request $request, Resep $recipe)
+
+    public function store(Request $request, Resep $resep)
     {
-        
         $validated = $request->validate([
             'nilai' => 'required|integer|min:1|max:5',
         ]);
 
-        $rating = Rating::updateOrCreate(
+        Rating::updateOrCreate(
             [
                 'user_id' => Auth::id(),
-                'recipe_id' => $recipe->id,
+                'resep_id' => $resep->id,
             ],
             [
-                'nilai' => $validated['nilai']
+                'rating' => $validated['nilai']
             ]
         );
 
-        return redirect()->back()
-            ->with('success', 'Rating berhasil disimpan!');
+        return redirect()->back()->with('success', 'Rating berhasil disimpan!');
     }
 }

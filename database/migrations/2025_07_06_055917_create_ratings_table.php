@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('resep_id')->constrained()->onDelete('cascade');
-            $table->integer('nilai_rating')->comment('1-5');
+            $table->integer('rating');
             $table->timestamps();
             $table->unique(['user_id', 'resep_id']);
         });

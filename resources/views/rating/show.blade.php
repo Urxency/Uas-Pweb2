@@ -1,26 +1,14 @@
-<form action="{{ route('rating.store', $resep->id) }}" method="POST">
+@if(Auth::check())
+<form action="{{ route('resep.rate', $resep->id) }}" method="POST">
     @csrf
-    <label for="nilai_rating">Rating:</label>
-    <select name="nilai_rating" id="nilai_rating">
-        @for ($i = 1; $i <= 5; $i++)
-            <option value="{{ $i }}"
-                {{ optional($resep->ratings->where('user_id', auth()->id())->first())->nilai_rating == $i ? 'selected' : '' }}>
-                {{ $i }} Bintang
+    <label for="rating">Beri Rating:</label>
+    <select name="rating" id="rating" required>
+        @for($i = 1; $i <= 5; $i++)
+            <option value="{{ $i }}" {{ optional($resep->ratings->where('user_id', Auth::id())->first())->rating == $i ? 'selected' : '' }}>
+                {{ $i }} ⭐
             </option>
         @endfor
     </select>
-    <button type="submit" class="btn btn-primary btn-sm">Kirim</button>
+    <button type="submit">Kirim</button>
 </form>
-
-<p>
-    Rating:
-    @for ($i = 1; $i <= 5; $i++)
-        @if($i <= round($resep->averageRating()))
-            ⭐
-        @else
-            ☆
-        @endif
-    @endfor
-    ({{ number_format($resep->averageRating(), 1) }}/5)
-</p>
-
+@endif

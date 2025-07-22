@@ -573,6 +573,38 @@
                                     {{ $item->level }}
                                 </div>
 
+
+                                <p>Rating:
+                                    {{ $item->averageRating() !== null ? number_format($item->averageRating(), 1) . ' / 5' : 'Belum ada rating' }}
+                                    ⭐
+                                </p>
+
+                                @auth
+                                    <form action="{{ route('resep.rate', $item->id) }}" method="POST"
+                                        style="margin-top: 0.5rem;">
+                                        @csrf
+                                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                            <label for="rating_{{ $item->id }}" style="margin: 0;">Beri
+                                                rating:</label>
+                                            <select name="rating" id="rating_{{ $item->id }}"
+                                                class="form-select form-select-sm w-auto" required>
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    <option value="{{ $i }}"
+                                                        {{ optional($item->ratings->where('user_id', Auth::id())->first())->rating == $i ? 'selected' : '' }}>
+                                                        {{ $i }} ⭐
+                                                    </option>
+                                                @endfor
+                                            </select>
+                                            <button type="submit" class="btn btn-sm btn-success">Kirim</button>
+                                        </div>
+                                    </form>
+                                @else
+                                    <p><a href="{{ route('login') }}">Login</a> untuk memberi rating.</p>
+                                @endauth
+
+
+
+
                                 <p style="font-size: 0.9rem; color: #666;">Klik untuk melihat detail resep</p>
                             </div>
 
@@ -627,6 +659,13 @@
                 } else {
                     card.classList.toggle('flipped');
                 }
+
+                document.querySelectorAll('.rate-button, .dropdown-toggle, select, input, textarea')
+                    .forEach(el => {
+                        el.addEventListener('click', function(e) {
+                            e.stopPropagation(); // Mencegah flip
+                        });
+                    });
             });
         });
     </script>

@@ -11,7 +11,7 @@ class Resep extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['judul_resep', 'kategori_id', 'bahan_resep', 'durasi','level', 'langkah_resep', 'gambar', 'user_id'];
+    protected $fillable = ['judul_resep', 'kategori_id', 'bahan_resep', 'durasi', 'level', 'langkah_resep', 'gambar', 'user_id'];
 
     // Relasi ke User
     public function user()
@@ -25,21 +25,23 @@ class Resep extends Model
         return $this->belongsTo(kategori::class, 'kategori_id');
     }
 
-    // Relasi ke Rating
     public function ratings()
     {
-        return $this->hasMany(Rating::class, 'resep_id');
+        return $this->hasMany(Rating::class);
     }
 
-    // Method untuk mendapatkan rata-rata rating
     public function averageRating()
     {
-        return $this->ratings()->avg('nilai');
+        if (!$this->relationLoaded('ratings')) {
+            $this->load('ratings');
+        }
+
+        return $this->ratings->avg('rating') ? round($this->ratings->avg('rating'), 1) : null;
     }
 
-    // Method untuk mendapatkan total rating
-    public function totalRatings()
-    {
-        return $this->ratings()->count();
-    }
+    // // Method untuk mendapatkan total rating
+    // public function totalRatings()
+    // {
+    //     return $this->ratings()->count();
+    // }
 }
