@@ -625,7 +625,6 @@
         </section>
     </main>
 
-
     <div class="rating-section">
         <h3><i class="fas fa-star"></i> Beri Rating</h3>
         <div class="rating-form">
@@ -638,9 +637,6 @@
             </div>
             <button class="btn btn-primary">Kirim Rating</button>
         </div>
-    </div>
-    </div>
-    </div>
     </div>
 
     {{-- <!-- Floating Action Button -->
