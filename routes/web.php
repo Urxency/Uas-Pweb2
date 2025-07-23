@@ -29,13 +29,11 @@ Auth::routes();
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 
-// route untuk user
-
+// Semua user 
 Route::middleware(['auth'])->group(function () {
     // Resep
-    Route::resource('/resep', ResepController::class)->except(['create']);
-    Route::get('/resep/create', [ResepController::class, 'create'])->name('resep.create'); // jika ingin terpisah
-
+    Route::resource('/resep', ResepController::class);
+    
     // Rating
     Route::post('/resep/{resep}/rate', [ResepController::class, 'rate'])->name('resep.rate');
 
@@ -43,13 +41,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile/{id}', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/profile/{id}/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/{id}', [ProfileController::class, 'update'])->name('profile.update');
+
+    // Admin routes
+    Route::middleware(['isAdmin'])->group(function () {
+        Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+        Route::resource('/admin/users', UserController::class);
+        Route::resource('/kategori', KategoriController::class);
+    });
 });
 
 
-//route untuk admin
-
-Route::middleware(['auth', 'isAdmin'])->group(function () {
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
-    Route::resource('/admin/users', UserController::class);
-    Route::resource('/kategori', KategoriController::class);
-});

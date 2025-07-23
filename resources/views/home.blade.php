@@ -656,11 +656,11 @@
                     card.classList.toggle('flipped');
                 }
 
-                document.querySelectorAll('.rate-button, .dropdown-toggle, select, input, textarea')
-                    .forEach(el => {
-                        el.addEventListener('click', function(e) {
-                            e.stopPropagation(); // Mencegah flip
-                        });
+                // document.querySelectorAll('.rate-button, .dropdown-toggle, select, input, textarea')
+                //     .forEach(el => {
+                //         el.addEventListener('click', function(e) {
+                //             e.stopPropagation(); 
+                //         });
                     });
             });
         });
