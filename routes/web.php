@@ -13,6 +13,7 @@ use App\Http\Controllers\ResepController;
 use App\Http\Controllers\TampilanController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CommentController;
 
 
 //route untuk guest
@@ -31,6 +32,8 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 
 // Semua user 
 Route::middleware(['auth'])->group(function () {
+
+    Route::post('/comments', [CommentController::class, 'store'])->middleware('auth');
     // Resep
     Route::resource('/resep', ResepController::class);
     

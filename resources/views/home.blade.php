@@ -455,6 +455,55 @@
         .recipe-card-front {
             animation: fadeInUp 0.6s ease-out;
         }
+
+        .comment-form {
+    margin-top: 20px;
+    background: linear-gradient(135deg, #e0d5ff, #f5f3ff);
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(120, 82, 255, 0.2);
+}
+
+.comment-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cbbbf7;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #333;
+    resize: vertical;
+    font-family: sans-serif;
+}
+
+.comment-button {
+    margin-top: 10px;
+    background: linear-gradient(135deg, #7b42f6, #b01eff);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.comment-button:hover {
+    background: linear-gradient(135deg, #6a36db, #9014e7);
+}
+
+.comments-section {
+    margin-top: 30px;
+}
+
+.comment-card {
+    background-color: #ffffffdd;
+    border-left: 5px solid #a56cf5;
+    padding: 12px 16px;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    color: #333;
+    box-shadow: 0 2px 6px rgba(160, 120, 255, 0.1);
+}
+
     </style>
 </head>
 
@@ -625,24 +674,29 @@
         </section>
     </main>
 
-    <div class="rating-section">
-        <h3><i class="fas fa-star"></i> Beri Rating</h3>
-        <div class="rating-form">
-            <div class="star-rating">
-                <span class="star" data-rating="1">★</span>
-                <span class="star" data-rating="2">★</span>
-                <span class="star" data-rating="3">★</span>
-                <span class="star" data-rating="4">★</span>
-                <span class="star" data-rating="5">★</span>
-            </div>
-            <button class="btn btn-primary">Kirim Rating</button>
-        </div>
-    </div>
+   <!-- Form Komentar -->
+@if (Auth::check())
+    <form action="{{ url('/comments') }}" method="POST" class="comment-form">
+        @csrf
+        <textarea name="content" class="comment-textarea" rows="3" placeholder="Tulis komentar..."></textarea>
+        <button type="submit" class="comment-button">Kirim</button>
+    </form>
+@else
+    <p><a href="{{ route('login') }}">Login</a> untuk menulis komentar.</p>
+@endif
 
-    {{-- <!-- Floating Action Button -->
-    <button class="fab" title="Tambah Resep Baru">
-        <a href="{{ route('resep.create') }}" class="fas fa-plus" style="text-decoration: none;"></a>
-    </button> --}}
+<!-- Daftar Komentar -->
+<div class="comments-section">
+    <h5>Komentar:</h5>
+    @foreach (\App\Models\Comment::latest()->get() as $comment)
+        <div class="comment-card">
+            <strong>{{ $comment->user->name }}</strong>
+            <p>{{ $comment->content }}</p>
+            <small>{{ $comment->created_at->diffForHumans() }}</small>
+        </div>
+    @endforeach
+</div>
+
 
 
     <script>
@@ -663,5 +717,4 @@
                 //         });
                     });
             });
-        });
     </script>
