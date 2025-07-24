@@ -7,7 +7,6 @@
     <title>ResepKos - Aplikasi Resep Masakan Mahasiswa</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.2.2/css/dataTables.dataTables.min.css">
-    <!-- Scripts -->
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 
     <style>
@@ -22,7 +21,7 @@
             font-family: Arial, Helvetica, sans-serif;
             line-height: 1.6;
             color: #333;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #667eea;
             min-height: 100vh;
         }
 
@@ -85,7 +84,7 @@
         }
 
         .btn-primary {
-            background: linear-gradient(45deg, #667eea, #764ba2);
+            background: #667eea;
             color: white;
         }
 
@@ -287,7 +286,6 @@
 
 
 
-        /* Rating Section */
         .rating-section {
             background: #f8f9fa;
             padding: 1.5rem;
@@ -408,7 +406,6 @@
         }
 
 
-        /* Responsive */
         @media (max-width: 768px) {
             .nav-menu {
                 display: none;
@@ -433,9 +430,12 @@
             .container {
                 padding: 1rem;
             }
+
+            .comment-formse {
+                text-align: center
+            }
         }
 
-        /* Animation */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -457,58 +457,56 @@
         }
 
         .comment-form {
-    margin-top: 20px;
-    background: linear-gradient(135deg, #e0d5ff, #f5f3ff);
-    padding: 15px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(120, 82, 255, 0.2);
-}
+            margin-top: 20px;
+            background: linear-gradient(135deg, #e0d5ff, #f5f3ff);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(120, 82, 255, 0.2);
+        }
 
-.comment-textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #cbbbf7;
-    border-radius: 8px;
-    background-color: #fff;
-    color: #333;
-    resize: vertical;
-    font-family: sans-serif;
-}
+        .comment-textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cbbbf7;
+            border-radius: 8px;
+            background-color: #fff;
+            color: #333;
+            resize: vertical;
+            font-family: sans-serif;
+        }
 
-.comment-button {
-    margin-top: 10px;
-    background: linear-gradient(135deg, #7b42f6, #b01eff);
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-}
+        .comment-button {
+            margin-top: 10px;
+            background: linear-gradient(135deg, #7b42f6, #b01eff);
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
 
-.comment-button:hover {
-    background: linear-gradient(135deg, #6a36db, #9014e7);
-}
+        .comment-button:hover {
+            background: linear-gradient(135deg, #6a36db, #9014e7);
+        }
 
-.comments-section {
-    margin-top: 30px;
-}
+        .comments-section {
+            margin-top: 30px;
+        }
 
-.comment-card {
-    background-color: #ffffffdd;
-    border-left: 5px solid #a56cf5;
-    padding: 12px 16px;
-    margin-bottom: 10px;
-    border-radius: 10px;
-    color: #333;
-    box-shadow: 0 2px 6px rgba(160, 120, 255, 0.1);
-}
-
+        .comment-card {
+            background-color: #ffffffdd;
+            border-left: 5px solid #a56cf5;
+            padding: 12px 16px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            color: #333;
+            box-shadow: 0 2px 6px rgba(160, 120, 255, 0.1);
+        }
     </style>
 </head>
 
 <body>
-    <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
             <a href="#" class="logo">
@@ -542,7 +540,7 @@
                             <a class="dropdown-item" href="{{ route('profile.show', auth()->user()) }}">Profile</a>
                             <a class="dropdown-item" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
-                                                    document.getElementById('logout-form').submit();">
+                                document.getElementById('logout-form').submit();">
                                 {{ __('Logout') }}
                             </a>
 
@@ -557,7 +555,6 @@
     </nav>
 
     <main class="main-content">
-        <!-- Hero Section -->
         <section class="hero">
             <div class="container">
                 <h1><i class="fas fa-cooking-pot"></i> ResepKos</h1>
@@ -568,7 +565,7 @@
             </div>
         </section>
 
-        <!-- Search & Filter Section -->
+        {{-- Search & Filter Section  --}}
         <section class="search-section">
             <div class="container">
                 <form action="{{ route('search') }}" method="GET" class="d-flex mb-4">
@@ -576,10 +573,7 @@
                         value="{{ request('keyword') }}">
                     <button type="submit" class="btn btn-primary">Cari</button>
                 </form>
-
-
-            </div>
-
+            </div>  
             <div class="category-filter" style="margin-top: 1rem;">
                 <button class="category-btn active" data-category="all">Semua</button>
                 <button class="category-btn" data-category="nasi">🍚 Nasi</button>
@@ -588,10 +582,10 @@
                 <button class="category-btn" data-category="minuman">🥤 Minuman</button>
                 <button class="category-btn" data-category="cemilan">🍪 Cemilan</button>
             </div>
-            </div>
+            
         </section>
 
-        <!-- Recipes Section -->
+        {{-- Recipes Section  --}}
         <section id="recipes" class="container">
             <h2 class="section-title">
                 <i class="fas fa-fire"></i> Resep Populer
@@ -601,7 +595,7 @@
                 @foreach ($resep as $item)
                     <div class="recipe-card-wrapper {{ Auth::check() ? 'clickable' : 'need-login' }}">
                         <div class="recipe-card-inner">
-                            <!-- Sisi Depan -->
+                            {{-- Sisi Depan  --}}
                             <div class="recipe-card-front">
                                 <div class="recipe-image">
                                     <div class="recipe-difficulty">
@@ -622,12 +616,11 @@
                                     {{ $item->level }}
                                 </div>
 
-
                                 <p>Rating:
                                     {{ $item->averageRating() !== null ? number_format($item->averageRating(), 1) . ' / 5' : 'Belum ada rating' }}
                                     ⭐
                                 </p>
-
+                                
                                 @auth
                                     <form action="{{ route('resep.rate', $item->id) }}" method="POST"
                                         style="margin-top: 0.5rem;">
@@ -648,16 +641,13 @@
                                         </div>
                                     </form>
                                 @else
-                                    <p><a href="{{ route('login') }}">Login</a> untuk memberi rating.</p>
+                                    <p><a href="{{ route('login') }}" style="text-decoration: none;">Login</a> untuk
+                                        memberi rating.</p>
                                 @endauth
-
-
-
-
                                 <p style="font-size: 0.9rem; color: #666;">Klik untuk melihat detail resep</p>
                             </div>
 
-                            <!-- Sisi Belakang -->
+                            {{-- Sisi Belakang  --}}
                             <div class="recipe-card-back">
                                 <strong>Bahan:</strong>
                                 <p>{!! nl2br(e($item->bahan_resep)) !!}</p>
@@ -674,47 +664,52 @@
         </section>
     </main>
 
-   <!-- Form Komentar -->
-@if (Auth::check())
-    <form action="{{ url('/comments') }}" method="POST" class="comment-form">
-        @csrf
-        <textarea name="content" class="comment-textarea" rows="3" placeholder="Tulis komentar..."></textarea>
-        <button type="submit" class="comment-button">Kirim</button>
-    </form>
-@else
-    <p><a href="{{ route('login') }}">Login</a> untuk menulis komentar.</p>
-@endif
+    <div class="comments-section">
 
-<!-- Daftar Komentar -->
-<div class="comments-section">
-    <h5>Komentar:</h5>
-    @foreach (\App\Models\Comment::latest()->get() as $comment)
-        <div class="comment-card">
-            <strong>{{ $comment->user->name }}</strong>
-            <p>{{ $comment->content }}</p>
-            <small>{{ $comment->created_at->diffForHumans() }}</small>
-        </div>
-    @endforeach
-</div>
+    </div>
+    {{-- form komentar --}}
+    <div class="comment-form">
+        <h5>Komentar:</h5>
+        @foreach (\App\Models\Comment::latest()->get() as $comment)
+            <div class="comment-card">
+                <strong>{{ $comment->user->name }}</strong>
+                <p>{{ $comment->content }}</p>
+                <small>{{ $comment->created_at->diffForHumans() }}</small>
+            </div>
+        @endforeach
+        @if (Auth::check())
+            <form action="{{ url('/comments') }}" method="POST" class="comment-form">
+                @csrf
+                <textarea name="content" class="comment-textarea" rows="3" placeholder="Tulis komentar..."></textarea>
+                <button type="submit" class="comment-button">Kirim</button>
+            </form>
+        @else
+            <div class="comment-formse">
+                <p <a href="{{ route('login') }}" class="btn btn-primary">Login</a> untuk menulis komentar.</p>
+            </div>
+        @endif
+    </div>
 
 
 
     <script>
+    document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.recipe-card-wrapper').forEach(card => {
-            card.addEventListener('click', () => {
-                // card.classList.toggle('flipped');
+            card.addEventListener('click', (e) => {
+                // Cegah flip jika elemen interaktif diklik
+                const tag = e.target.tagName.toLowerCase();
+                const interactiveTags = ['button', 'select', 'input', 'textarea', 'label'];
+                if (interactiveTags.includes(tag) || e.target.closest('.dropdown')) {
+                    return;
+                }
+
                 if (card.classList.contains('need-login')) {
                     alert('Silakan login terlebih dahulu untuk melihat detail resep.');
                     window.location.href = "{{ route('login') }}";
                 } else {
                     card.classList.toggle('flipped');
                 }
-
-                // document.querySelectorAll('.rate-button, .dropdown-toggle, select, input, textarea')
-                //     .forEach(el => {
-                //         el.addEventListener('click', function(e) {
-                //             e.stopPropagation(); 
-                //         });
-                    });
             });
-    </script>
+        });
+    });
+</script>
